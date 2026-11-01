@@ -1,0 +1,707 @@
+{
+	"snapshot": "as of 2026-10",
+	"source": "Real club names from 5 top leagues; Elo values are deterministic synthetic tiers (see docs/data-provenance.md)",
+	"count": 100,
+	"clubs": [
+		{
+			"id": "club-001",
+			"name": "Bayern München",
+			"league": "bundesliga",
+			"elo": 2004,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-002",
+			"name": "Borussia Dortmund",
+			"league": "bundesliga",
+			"elo": 1987,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-003",
+			"name": "Bayer Leverkusen",
+			"league": "bundesliga",
+			"elo": 1967,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-004",
+			"name": "RB Leipzig",
+			"league": "bundesliga",
+			"elo": 1960,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-005",
+			"name": "VfB Stuttgart",
+			"league": "bundesliga",
+			"elo": 1918,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-006",
+			"name": "Eintracht Frankfurt",
+			"league": "bundesliga",
+			"elo": 1878,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-007",
+			"name": "VfL Wolfsburg",
+			"league": "bundesliga",
+			"elo": 1855,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-008",
+			"name": "SC Freiburg",
+			"league": "bundesliga",
+			"elo": 1841,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-009",
+			"name": "Borussia Mönchengladbach",
+			"league": "bundesliga",
+			"elo": 1808,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-010",
+			"name": "FC Augsburg",
+			"league": "bundesliga",
+			"elo": 1814,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-011",
+			"name": "Werder Bremen",
+			"league": "bundesliga",
+			"elo": 1753,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-012",
+			"name": "Mainz 05",
+			"league": "bundesliga",
+			"elo": 1743,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-013",
+			"name": "Hoffenheim",
+			"league": "bundesliga",
+			"elo": 1720,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-014",
+			"name": "FC Köln",
+			"league": "bundesliga",
+			"elo": 1704,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-015",
+			"name": "1. FC Union Berlin",
+			"league": "bundesliga",
+			"elo": 1657,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-016",
+			"name": "1. FSV Mainz 05",
+			"league": "bundesliga",
+			"elo": 1651,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-017",
+			"name": "VfL Bochum",
+			"league": "bundesliga",
+			"elo": 1621,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-018",
+			"name": "FC St. Pauli",
+			"league": "bundesliga",
+			"elo": 1581,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-019",
+			"name": "Hamburger SV",
+			"league": "bundesliga",
+			"elo": 1568,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-020",
+			"name": "1. FC Heidenheim",
+			"league": "bundesliga",
+			"elo": 1564,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-021",
+			"name": "Manchester City",
+			"league": "premier_league",
+			"elo": 2039,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-022",
+			"name": "Arsenal",
+			"league": "premier_league",
+			"elo": 2001,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-023",
+			"name": "Liverpool",
+			"league": "premier_league",
+			"elo": 1958,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-024",
+			"name": "Chelsea",
+			"league": "premier_league",
+			"elo": 1936,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-025",
+			"name": "Tottenham Hotspur",
+			"league": "premier_league",
+			"elo": 1931,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-026",
+			"name": "Manchester United",
+			"league": "premier_league",
+			"elo": 1877,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-027",
+			"name": "Newcastle United",
+			"league": "premier_league",
+			"elo": 1883,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-028",
+			"name": "Aston Villa",
+			"league": "premier_league",
+			"elo": 1838,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-029",
+			"name": "Brighton & Hove Albion",
+			"league": "premier_league",
+			"elo": 1832,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-030",
+			"name": "West Ham United",
+			"league": "premier_league",
+			"elo": 1803,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-031",
+			"name": "Crystal Palace",
+			"league": "premier_league",
+			"elo": 1771,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-032",
+			"name": "Everton",
+			"league": "premier_league",
+			"elo": 1762,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-033",
+			"name": "Fulham",
+			"league": "premier_league",
+			"elo": 1701,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-034",
+			"name": "Brentford",
+			"league": "premier_league",
+			"elo": 1709,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-035",
+			"name": "Nottingham Forest",
+			"league": "premier_league",
+			"elo": 1651,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-036",
+			"name": "Wolverhampton Wanderers",
+			"league": "premier_league",
+			"elo": 1626,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-037",
+			"name": "Bournemouth",
+			"league": "premier_league",
+			"elo": 1626,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-038",
+			"name": "Burnley",
+			"league": "premier_league",
+			"elo": 1612,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-039",
+			"name": "Leicester City",
+			"league": "premier_league",
+			"elo": 1588,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-040",
+			"name": "Southampton",
+			"league": "premier_league",
+			"elo": 1560,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-041",
+			"name": "Real Madrid",
+			"league": "la_liga",
+			"elo": 2014,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-042",
+			"name": "FC Barcelona",
+			"league": "la_liga",
+			"elo": 1978,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-043",
+			"name": "Atlético Madrid",
+			"league": "la_liga",
+			"elo": 1961,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-044",
+			"name": "Athletic Club",
+			"league": "la_liga",
+			"elo": 1935,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-045",
+			"name": "Real Sociedad",
+			"league": "la_liga",
+			"elo": 1901,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-046",
+			"name": "Villarreal",
+			"league": "la_liga",
+			"elo": 1908,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-047",
+			"name": "Real Betis",
+			"league": "la_liga",
+			"elo": 1853,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-048",
+			"name": "Sevilla",
+			"league": "la_liga",
+			"elo": 1865,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-049",
+			"name": "Girona",
+			"league": "la_liga",
+			"elo": 1829,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-050",
+			"name": "Celta Vigo",
+			"league": "la_liga",
+			"elo": 1796,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-051",
+			"name": "Osasuna",
+			"league": "la_liga",
+			"elo": 1785,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-052",
+			"name": "Rayo Vallecano",
+			"league": "la_liga",
+			"elo": 1764,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-053",
+			"name": "Getafe",
+			"league": "la_liga",
+			"elo": 1736,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-054",
+			"name": "Mallorca",
+			"league": "la_liga",
+			"elo": 1706,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-055",
+			"name": "Valencia",
+			"league": "la_liga",
+			"elo": 1656,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-056",
+			"name": "Espanyol",
+			"league": "la_liga",
+			"elo": 1660,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-057",
+			"name": "Alavés",
+			"league": "la_liga",
+			"elo": 1625,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-058",
+			"name": "Leganés",
+			"league": "la_liga",
+			"elo": 1605,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-059",
+			"name": "Gimnàstic",
+			"league": "la_liga",
+			"elo": 1588,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-060",
+			"name": "Las Palmas",
+			"league": "la_liga",
+			"elo": 1542,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-061",
+			"name": "Inter",
+			"league": "serie_a",
+			"elo": 2020,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-062",
+			"name": "Milan",
+			"league": "serie_a",
+			"elo": 2003,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-063",
+			"name": "Juventus",
+			"league": "serie_a",
+			"elo": 1973,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-064",
+			"name": "Napoli",
+			"league": "serie_a",
+			"elo": 1941,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-065",
+			"name": "Atalanta",
+			"league": "serie_a",
+			"elo": 1936,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-066",
+			"name": "Roma",
+			"league": "serie_a",
+			"elo": 1883,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-067",
+			"name": "Lazio",
+			"league": "serie_a",
+			"elo": 1861,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-068",
+			"name": "Fiorentina",
+			"league": "serie_a",
+			"elo": 1860,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-069",
+			"name": "Bologna",
+			"league": "serie_a",
+			"elo": 1839,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-070",
+			"name": "Torino",
+			"league": "serie_a",
+			"elo": 1784,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-071",
+			"name": "Udinese",
+			"league": "serie_a",
+			"elo": 1753,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-072",
+			"name": "Genoa",
+			"league": "serie_a",
+			"elo": 1752,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-073",
+			"name": "Cagliari",
+			"league": "serie_a",
+			"elo": 1725,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-074",
+			"name": "Lecce",
+			"league": "serie_a",
+			"elo": 1712,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-075",
+			"name": "Empoli",
+			"league": "serie_a",
+			"elo": 1687,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-076",
+			"name": "Como",
+			"league": "serie_a",
+			"elo": 1654,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-077",
+			"name": "Parma",
+			"league": "serie_a",
+			"elo": 1630,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-078",
+			"name": "Venezia",
+			"league": "serie_a",
+			"elo": 1602,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-079",
+			"name": "Monza",
+			"league": "serie_a",
+			"elo": 1561,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-080",
+			"name": "Verona",
+			"league": "serie_a",
+			"elo": 1565,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-081",
+			"name": "Paris Saint-Germain",
+			"league": "ligue_1",
+			"elo": 2016,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-082",
+			"name": "Monaco",
+			"league": "ligue_1",
+			"elo": 1998,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-083",
+			"name": "Marseille",
+			"league": "ligue_1",
+			"elo": 1954,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-084",
+			"name": "Lille",
+			"league": "ligue_1",
+			"elo": 1943,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-085",
+			"name": "Lyon",
+			"league": "ligue_1",
+			"elo": 1922,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-086",
+			"name": "Nice",
+			"league": "ligue_1",
+			"elo": 1883,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-087",
+			"name": "Lens",
+			"league": "ligue_1",
+			"elo": 1882,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-088",
+			"name": "Rennes",
+			"league": "ligue_1",
+			"elo": 1847,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-089",
+			"name": "Strasbourg",
+			"league": "ligue_1",
+			"elo": 1836,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-090",
+			"name": "Toulouse",
+			"league": "ligue_1",
+			"elo": 1803,
+			"color": "#1d4ed8"
+		},
+		{
+			"id": "club-091",
+			"name": "Brest",
+			"league": "ligue_1",
+			"elo": 1788,
+			"color": "#dc2626"
+		},
+		{
+			"id": "club-092",
+			"name": "Reims",
+			"league": "ligue_1",
+			"elo": 1726,
+			"color": "#16a34a"
+		},
+		{
+			"id": "club-093",
+			"name": "Nantes",
+			"league": "ligue_1",
+			"elo": 1728,
+			"color": "#f59e0b"
+		},
+		{
+			"id": "club-094",
+			"name": "Montpellier",
+			"league": "ligue_1",
+			"elo": 1698,
+			"color": "#7c3aed"
+		},
+		{
+			"id": "club-095",
+			"name": "Auxerre",
+			"league": "ligue_1",
+			"elo": 1685,
+			"color": "#0891b2"
+		},
+		{
+			"id": "club-096",
+			"name": "Angers",
+			"league": "ligue_1",
+			"elo": 1664,
+			"color": "#db2777"
+		},
+		{
+			"id": "club-097",
+			"name": "Saint-Étienne",
+			"league": "ligue_1",
+			"elo": 1623,
+			"color": "#4b5563"
+		},
+		{
+			"id": "club-098",
+			"name": "Le Havre",
+			"league": "ligue_1",
+			"elo": 1588,
+			"color": "#ea580c"
+		},
+		{
+			"id": "club-099",
+			"name": "Bordeaux",
+			"league": "ligue_1",
+			"elo": 1577,
+			"color": "#0d9488"
+		},
+		{
+			"id": "club-100",
+			"name": "Metz",
+			"league": "ligue_1",
+			"elo": 1539,
+			"color": "#1d4ed8"
+		}
+	]
+}
