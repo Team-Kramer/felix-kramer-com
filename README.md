@@ -35,10 +35,15 @@ pnpm sync-tokens  # warn-only Green Deck drift check vs. the SaaS repo
 Push to `main` → GitHub Actions (`.github/workflows/pages.yml`) runs
 `check → test → build` and deploys `build/` to GitHub Pages.
 
-**One-time setup**: in the repo settings, set
-*Pages → Build and deployment → Source* to **GitHub Actions** (it was previously
-"Deploy from a branch"). The `CNAME` file keeps `felix-kramer.com` pointed at the
-site.
+The site is live at **https://felix-kramer.com** (apex). Pages is configured
+with *Source: GitHub Actions* and the custom domain `felix-kramer.com`
+(registered via `static/CNAME` + the Pages API).
+
+> **Note on `www`:** GitHub Pages serves only the single registered custom
+> domain (the apex). `www.felix-kramer.com` currently 404s. To make it work,
+> add a DNS redirect at the registrar (e.g. a URL-forward from
+> `www.felix-kramer.com` → `https://felix-kramer.com`) — GitHub Pages itself
+> cannot serve two hostnames for one site.
 
 ## Routes
 
