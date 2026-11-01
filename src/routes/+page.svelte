@@ -231,19 +231,3 @@
 	</div>
 </section>
 
-<!-- 7 · SaaS strip -->
-<section class="mx-auto max-w-6xl px-4 py-16">
-	<div class="glow-border rounded-2xl bg-surface p-8 text-center md:p-12">
-		<h2 class="text-headline-lg">Du willst mehr als simulieren?</h2>
-		<p class="mx-auto mt-4 max-w-xl text-ink-secondary">
-			Felix ist auch eine Fußball-Intelligenz-Plattform im Aufbau: eigene Teams,
-			Szenarien und Analysen. Melde dich, wenn du früh dabei sein willst.
-		</p>
-		<a
-			href="mailto:hello@felix-kramer.com"
-			class="mt-8 inline-block rounded-full bg-accent px-8 py-3 font-bold text-on-green transition-colors duration-150 hover:bg-accent-hover"
-		>
-			Kontakt aufnehmen
-		</a>
-	</div>
-</section>

@@ -45,6 +45,7 @@ export { default as Bracket } from './bracket/bracket.svelte';
 export { default as FormationBuilder } from './formation-builder/formation-builder.svelte';
 export { default as MonteCarloPanel } from './monte-carlo-panel/monte-carlo-panel.svelte';
 export { default as ResultCard } from './result-card/result-card.svelte';
+export { default as MarkdownView } from './markdown-view/markdown-view.svelte';
 export { default as ChaosSlider } from './chaos-slider/chaos-slider.svelte';
 
 // Effects
