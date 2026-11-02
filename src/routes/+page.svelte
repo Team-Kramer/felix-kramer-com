@@ -1,7 +1,24 @@
 <script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
 	import { latestPosts } from '$lib/blog';
+	import { bindTilt, bindTypewriter, type TiltBinding, type TypewriterBinding } from '$lib/ui/effects';
 
 	const posts = latestPosts(3);
+
+	const tagline =
+		'Simuliere Matches, Turniere und komplette Ligen. Echte Wahrscheinlichkeiten, berechnet direkt in deinem Browser.';
+
+	let taglineEl: HTMLParagraphElement | undefined;
+	let typewriter: TypewriterBinding | undefined;
+	onMount(() => {
+		if (taglineEl) typewriter = bindTypewriter(taglineEl, tagline);
+	});
+	onDestroy(() => typewriter?.destroy());
+
+	function tilt(node: HTMLElement): { destroy(): void } {
+		const binding: TiltBinding = bindTilt(node);
+		return { destroy: binding.destroy };
+	}
 
 	const simulators = [
 		{
@@ -78,9 +95,10 @@
 <!-- 1 · Hero -->
 <section class="relative overflow-hidden">
 	<div
-		class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(29_185_84/12%),transparent_60%)]"
+		class="hero-parallax pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(29_185_84/12%),transparent_60%)]"
 		aria-hidden="true"
 	></div>
+	<div class="metaball" aria-hidden="true"></div>
 	<div class="relative mx-auto max-w-6xl px-4 pb-20 pt-24 text-center md:pt-32">
 		<p class="mb-4 text-sm font-bold uppercase tracking-[0.1em] text-accent">
 			Fußball-Intelligenz
@@ -88,10 +106,7 @@
 		<h1 class="text-display mx-auto max-w-3xl">
 			Entdecke die Welt des Fußballs — <span class="text-gradient-gold">mit Felix</span>
 		</h1>
-		<p class="mx-auto mt-6 max-w-xl text-lg text-ink-secondary">
-			Simuliere Matches, Turniere und komplette Ligen. Echte Wahrscheinlichkeiten,
-			berechnet direkt in deinem Browser.
-		</p>
+		<p bind:this={taglineEl} class="typewriter mx-auto mt-6 max-w-xl text-lg text-ink-secondary"></p>
 		<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
 			<a
 				href="/match"
@@ -110,7 +125,7 @@
 </section>
 
 <!-- 2 · Profile -->
-<section id="profile" class="border-y border-line bg-surface">
+<section id="profile" class="reveal border-y border-line bg-surface">
 	<div class="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-[auto_1fr] md:items-center">
 		<div
 			class="glow-border mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-surface-elevated md:mx-0"
@@ -138,7 +153,7 @@
 </section>
 
 <!-- 3 · Blog (latest 3) -->
-<section class="mx-auto max-w-6xl px-4 py-16">
+<section class="reveal mx-auto max-w-6xl px-4 py-16">
 	<div class="mb-8 flex items-end justify-between">
 		<h2 class="text-headline-lg">Frisch aus dem Blog</h2>
 		<a href="/blog" class="text-sm font-bold text-accent hover:text-accent-hover">
@@ -164,7 +179,7 @@
 </section>
 
 <!-- 4 · Simulator showcase -->
-<section class="border-y border-line bg-surface">
+<section class="reveal border-y border-line bg-surface">
 	<div class="mx-auto max-w-6xl px-4 py-16">
 		<h2 class="text-headline-lg">Fünf Simulatoren. Ein Ziel: Klarheit.</h2>
 		<p class="mt-3 max-w-xl text-ink-secondary">
@@ -175,7 +190,8 @@
 			{#each simulators as sim}
 				<a
 					href={sim.href}
-					class="hover-lift group rounded-xl border border-line bg-stage p-6"
+					use:tilt
+					class="group rounded-xl border border-line bg-stage p-6 transition-shadow duration-150 hover:shadow-[var(--shadow-teal-glow)]"
 				>
 					<span
 						class="icon-glow inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent-light"
@@ -194,7 +210,7 @@
 
 <!-- 5 · Feature sections (alternating) -->
 {#each features as feature, i}
-	<section class="mx-auto max-w-6xl px-4 py-12">
+	<section class="reveal mx-auto max-w-6xl px-4 py-12">
 		<div
 			class="grid items-center gap-8 md:grid-cols-2"
 			class:md:[direction:rtl]={i % 2 === 1}
@@ -220,7 +236,7 @@
 {/each}
 
 <!-- 6 · Stats strip -->
-<section class="border-y border-line bg-pitch-deep">
+<section class="blend-overlay border-y border-line bg-pitch-deep">
 	<div class="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-12 text-center md:grid-cols-4">
 		{#each stats as stat}
 			<div>
