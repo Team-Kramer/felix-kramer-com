@@ -17,6 +17,8 @@ export const de = {
 		tagline: 'Fußball-Intelligenz',
 		blog: 'Blog',
 		about: 'Über mich',
+		impressum: 'Impressum',
+		datenschutz: 'Datenschutz',
 		github: 'GitHub'
 	},
 	common: {
