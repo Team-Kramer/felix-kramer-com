@@ -24,7 +24,7 @@
 		<section>
 			<h2 class="font-bold text-ink">Kontakt</h2>
 			<p class="mt-2">
-				E-Mail: <a class="underline" href="mailto:hello@felix-kramer.com">hello@felix-kramer.com</a>
+				E-Mail: <a class="underline" href="mailto:info@martin-kramer.com">info@martin-kramer.com</a>
 			</p>
 		</section>
 
