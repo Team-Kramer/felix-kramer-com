@@ -18,7 +18,7 @@
 				Am Anger 4<br />
 				33758 Schloß Holte-Stukenbrock<br />
 				Deutschland<br />
-				E-Mail: <a class="underline" href="mailto:hello@felix-kramer.com">hello@felix-kramer.com</a>
+				E-Mail: <a class="underline" href="mailto:info@martin-kramer.com">info@martin-kramer.com</a>
 			</p>
 		</section>
 
