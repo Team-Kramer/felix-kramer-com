@@ -115,6 +115,12 @@
 				<a href="/about" class="transition-colors duration-150 hover:text-ink"
 					>{i18n.t('footer.about')}</a
 				>
+				<a href="/impressum" class="transition-colors duration-150 hover:text-ink"
+					>{i18n.t('footer.impressum')}</a
+				>
+				<a href="/datenschutz" class="transition-colors duration-150 hover:text-ink"
+					>{i18n.t('footer.datenschutz')}</a
+				>
 				<a
 					href="https://github.com/Team-Kramer"
 					class="transition-colors duration-150 hover:text-ink"

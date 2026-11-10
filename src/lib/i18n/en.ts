@@ -16,6 +16,8 @@ export const en: Catalog = {
 		tagline: 'Football Intelligence',
 		blog: 'Blog',
 		about: 'About',
+		impressum: 'Legal notice',
+		datenschutz: 'Privacy',
 		github: 'GitHub'
 	},
 	common: {
