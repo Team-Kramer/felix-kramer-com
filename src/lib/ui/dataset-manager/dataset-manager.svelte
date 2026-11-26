@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Button from '../button/button.svelte';
+	import type { DatasetExportProfile } from '$lib/engine/dataset/export';
 	import {
 		datasetStore,
 		exportDatasetFile,
@@ -11,6 +12,7 @@
 
 	let fileInput: HTMLInputElement;
 	let busy = $state(false);
+	let exportProfile = $state<DatasetExportProfile>('internal-complete');
 
 	onMount(initializeDataset);
 
@@ -32,7 +34,7 @@
 	}
 
 	function exportFile() {
-		exportDatasetFile();
+		exportDatasetFile(exportProfile);
 	}
 </script>
 
@@ -50,6 +52,15 @@
 			<Button variant="secondary" busy={busy} onclick={() => fileInput?.click()}>
 				JSON importieren
 			</Button>
+			<label class="flex items-center gap-2 text-caption text-ink-tertiary">
+				<select bind:value={exportProfile} aria-label="Exportprofil" class="rounded border border-line bg-surface px-2 py-1 text-sm text-ink">
+					<option value="minimal">Minimal</option>
+					<option value="simulation">Simulation</option>
+					<option value="detailed">Detailed</option>
+					<option value="historical">Historical</option>
+					<option value="internal-complete">Internal complete</option>
+				</select>
+				</label>
 			<Button variant="icon-outline" aria-label="Aktuelle Liga exportieren" onclick={exportFile}>
 				<span class="material-symbols-outlined" aria-hidden="true">download</span>
 			</Button>

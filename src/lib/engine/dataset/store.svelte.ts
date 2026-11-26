@@ -17,10 +17,10 @@ export const datasetStore = $state<{
 	error: null,
 });
 
-export function initializeDataset(): void {
+export async function initializeDataset(): Promise<void> {
 	if (datasetStore.initialized) return;
 	try {
-		const stored = loadStoredDataset();
+		const stored = await loadStoredDataset();
 		if (stored) {
 			datasetStore.dataset = stored;
 			datasetStore.isUserDataset = true;
@@ -41,23 +41,23 @@ export async function importDatasetFileIntoStore(file: File): Promise<void> {
 		datasetStore.dataset = dataset;
 		datasetStore.isUserDataset = true;
 		datasetStore.error = null;
-		saveStoredDataset(dataset);
+		await saveStoredDataset(dataset);
 	} catch (error) {
 		datasetStore.error = error instanceof Error ? error.message : 'Dataset import failed.';
 		throw error;
 	}
 }
 
-export function resetDataset(): void {
-	clearStoredDataset();
+export async function resetDataset(): Promise<void> {
+	await clearStoredDataset();
 	datasetStore.dataset = getDefaultDataset();
 	datasetStore.isUserDataset = false;
 	datasetStore.error = null;
 }
 
-export function exportDatasetFile(): void {
+export function exportDatasetFile(profile: import('./export').DatasetExportProfile = 'internal-complete'): void {
 	if (!datasetStore.dataset) throw new Error('No dataset is loaded.');
-	const blob = new Blob([serializeDataset(datasetStore.dataset)], { type: 'application/json' });
+	const blob = new Blob([serializeDataset(datasetStore.dataset, true, profile)], { type: 'application/json' });
 	const url = URL.createObjectURL(blob);
 	const link = document.createElement('a');
 	link.href = url;
