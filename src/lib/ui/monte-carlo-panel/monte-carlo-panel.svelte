@@ -119,7 +119,7 @@
 			<button
 				type="button"
 				onclick={stop}
-				class="rounded-md border border-coral/60 px-3 py-1.5 text-body-md font-semibold text-coral transition-colors duration-150 hover:bg-coral/10 focus-visible:outline-2 focus-visible:outline-accent"
+				class="rounded-md border border-coral/60 px-3 py-1.5 text-body-md font-semibold text-coral transition-[transform,background-color] duration-150 ease-out hover:bg-coral/10 active:scale-95 focus-visible:outline-2 focus-visible:outline-accent"
 			>
 				Abbrechen
 			</button>
@@ -127,7 +127,7 @@
 			<button
 				type="button"
 				onclick={start}
-				class="rounded-md bg-accent px-4 py-1.5 text-body-md font-semibold text-on-green transition-colors duration-150 hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+				class="rounded-md bg-accent px-4 py-1.5 text-body-md font-semibold text-on-green transition-[transform,background-color] duration-150 ease-out hover:bg-accent-hover active:scale-95 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
 			>
 				Simulieren
 			</button>
@@ -165,7 +165,7 @@
 							aria-valuemax="100"
 							aria-valuenow={Math.round(row.title * 100)}
 						>
-							<div class="h-full rounded-full bg-accent transition-[width] duration-300 ease-out" style:width="{Math.round(row.title * 100)}%"></div>
+							<div class="h-full rounded-full bg-accent transition-[width] duration-200 ease-out" style:width="{Math.round(row.title * 100)}%"></div>
 						</div>
 						<span class="w-10 text-right font-mono text-caption tabular-nums text-ink">{Math.round(row.title * 100)}%</span>
 						{#if hasGroups}

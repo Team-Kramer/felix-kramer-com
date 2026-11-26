@@ -102,7 +102,7 @@
 		{#if gliding}
 			<span
 				bind:this={indicator}
-				class="pointer-events-none absolute top-1 left-0 z-0 rounded-full bg-accent-light transition-[transform,inline-size] duration-350 ease-[cubic-bezier(0.65,0,0.35,1)] {useNativeAnchors
+				class="pointer-events-none absolute top-1 left-0 z-0 rounded-full bg-accent-light transition-[transform,inline-size] duration-350 ease-[var(--spring-ui)] {useNativeAnchors
 					? '[position-anchor:--glide-active][inset:anchor(top)_auto_anchor(bottom)_anchor(left)][inline-size:anchor-size(width)]'
 					: ''}"
 				aria-hidden="true"

@@ -34,7 +34,7 @@ export function showToast(message: string, kind: ToastKind = 'success', duration
 			toastStore.update((messages) =>
 				messages.map((item) => (item.id === id ? { ...item, exiting: true } : item))
 			);
-			removalTimers.set(id, setTimeout(() => removeToast(id), 300));
+			removalTimers.set(id, setTimeout(() => removeToast(id), 260));
 		}, duration));
 	}
 	return id;

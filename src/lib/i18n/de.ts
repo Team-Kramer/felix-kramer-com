@@ -12,7 +12,8 @@ export const de = {
 		editor: 'Dateneditor',
 		blog: 'Blog',
 		about: 'Über mich',
-		start: 'Simulator starten'
+		start: 'Simulator starten',
+		menu: 'Menü'
 	},
 	footer: {
 		tagline: 'Fußball-Intelligenz',

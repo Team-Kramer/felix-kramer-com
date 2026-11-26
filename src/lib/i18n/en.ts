@@ -11,7 +11,8 @@ export const en: Catalog = {
 		editor: 'Dataset editor',
 		blog: 'Blog',
 		about: 'About',
-		start: 'Start simulator'
+		start: 'Start simulator',
+		menu: 'Menu'
 	},
 	footer: {
 		tagline: 'Football Intelligence',
