@@ -1,6 +1,6 @@
 # Data Separation — User-Provided Datasets
 
-**Status:** Implemented through M9; final hosted profile verification pending  
+**Status:** Complete (M0–M10; hosted verification done, see `docs/OVERALL_PLAN.md`)  
 **Ziel:** Klare Trennung zwischen Simulations-Engine, internem Erstellungstool und realen Vereins-/Liga-Daten  
 **Motivation:** Rechtliche Entkopplung, detaillierte mathematische Modelle und private Weitergabe von Nutzer-Datasets
 
