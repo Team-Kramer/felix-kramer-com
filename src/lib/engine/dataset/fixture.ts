@@ -34,6 +34,7 @@ export function createMinimalDataset(): FootballDataset {
 				aliases: [],
 				colors: { primary: '#FF6633' },
 			},
+
 		],
 		teamParticipations: [],
 		players: [],
@@ -53,6 +54,7 @@ export function createMinimalDataset(): FootballDataset {
 				validTo: null,
 				rating: { elo: 1550 },
 			},
+
 		],
 		playerSnapshots: [],
 		tacticalProfiles: [],
@@ -64,6 +66,7 @@ export function createMinimalDataset(): FootballDataset {
 		chemistry: [],
 		provenance: [],
 	};
+
 }
 
 export function createDetailedFixture(): FootballDataset {
