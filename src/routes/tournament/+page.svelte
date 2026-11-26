@@ -8,10 +8,14 @@
 		Bracket,
 		LeagueTable,
 		MonteCarloPanel,
-		Banner
+		Banner,
+		DatasetManager
 	} from '$lib/ui';
 	import { useI18n } from '$lib/i18n';
-	import { nations, toTeam } from '$lib/engine/data';
+	import { getDefaultDataset } from '$lib/engine/dataset';
+	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
+	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createTournament,
 		advance,
@@ -26,8 +30,10 @@
 	import type { Team } from '$lib/engine/types';
 
 	const i18n = useI18n();
-	const lang = $derived(i18n.lang);
-	const allTeams = $derived(nations.map((n) => toTeam(n, lang)));
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'tournament'));
+	const allTeams = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
+	const competitionForPreset: Record<string, string> = { wc2026: 'competition-fictional-wc2026', euro: 'competition-fictional-euro', ucl: 'competition-fictional-ucl', facup: 'competition-fictional-bracket', swiss: 'competition-fictional-bracket' };
+	const teamsForPreset = (id: string) => routeTeamsForCompetition(dataset, competitionForPreset[id], presets.find((preset) => preset.id === id)?.teamCount ?? 16);
 	const teamById = $derived(new Map(allTeams.map((t) => [t.id, t])));
 
 	interface Preset {
@@ -86,7 +92,7 @@
 	function applyPreset(id: string) {
 		const preset = presets.find((p) => p.id === id);
 		if (!preset) return;
-		teams = allTeams.slice(0, preset.teamCount);
+		teams = teamsForPreset(preset.id).slice(0, preset.teamCount);
 		tournament = null;
 	}
 
@@ -196,6 +202,7 @@
 <div class="mx-auto max-w-6xl px-4 py-12">
 	<SectionTitle emoji="🏆" title={i18n.t('tournament.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('tournament.subtitle')}</p>
+	<DatasetManager />
 
 	<!-- Config -->
 	<div class="mt-8 grid gap-4 md:grid-cols-3">

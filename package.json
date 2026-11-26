@@ -11,7 +11,8 @@
 		"test": "vitest run --config vitest.config.ts",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"sync-tokens": "node scripts/sync-tokens.mjs"
+		"sync-tokens": "node scripts/sync-tokens.mjs",
+		"generate:dataset-fixture": "node scripts/generate-dataset-fixture.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^3.0.8",

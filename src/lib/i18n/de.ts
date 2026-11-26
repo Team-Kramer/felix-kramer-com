@@ -9,6 +9,7 @@ export const de = {
 		league: 'Liga',
 		bracket: 'K.-o.',
 		draft: 'Draft',
+		editor: 'Dateneditor',
 		blog: 'Blog',
 		about: 'Über mich',
 		start: 'Simulator starten'

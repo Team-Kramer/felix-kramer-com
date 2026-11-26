@@ -8,6 +8,7 @@ export const en: Catalog = {
 		league: 'League',
 		bracket: 'Knockout',
 		draft: 'Draft',
+		editor: 'Dataset editor',
 		blog: 'Blog',
 		about: 'About',
 		start: 'Start simulator'

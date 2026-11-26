@@ -35,6 +35,7 @@ export type { SelectOption } from './select/select.svelte';
 export { default as CheckboxSwitch } from './checkbox-switch/checkbox-switch.svelte';
 export { default as Divider } from './divider/divider.svelte';
 export { default as Banner } from './banner/banner.svelte';
+export { default as DatasetManager } from './dataset-manager/dataset-manager.svelte';
 
 // Football-specific (★)
 export { default as ProbabilityBar } from './probability-bar/probability-bar.svelte';

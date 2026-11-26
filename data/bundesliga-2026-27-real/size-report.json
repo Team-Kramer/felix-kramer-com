@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-11-26T12:27:23.590Z",
+  "script": "build-bundesliga-real.mjs",
+  "batch": "2 (teams + real results + derived strength + player identities/memberships)",
+  "sources": {
+    "csv": "/tmp/d1.csv",
+    "openfootball": "/tmp/openfootball-de1.json",
+    "squads": "/Users/kram030/git/felix-kramer-com/tmp/bundesliga-2026-27-real/squads.json",
+    "retrievedAt": "2026-11-26"
+  },
+  "generationMs": 42,
+  "records": {
+    "competitions": 1,
+    "seasons": 1,
+    "teams": 18,
+    "teamParticipations": 18,
+    "players": 502,
+    "memberships": 502,
+    "teamSnapshots": 18,
+    "playerSnapshots": 502,
+    "tacticalProfiles": 0,
+    "matches": 90,
+    "matchAppearances": 0,
+    "events": 180,
+    "heatmaps": 0,
+    "tracking": 0,
+    "chemistry": 0,
+    "provenance": 4
+  },
+  "sizes": {
+    "compactJson": "0.381 MiB",
+    "prettyJson": "0.543 MiB",
+    "gzip": "0.033 MiB",
+    "brotli": "0.022 MiB"
+  },
+  "smokeTest": {
+    "engineTeamCount": 18,
+    "competitionTeamCount": 18
+  },
+  "gaps": [
+    "Player snapshots carry identity-level data only (no ratings/attributes) — detailed attributes arrive with the internal tool.",
+    "No dateOfBirth or preferredFoot yet (not in the Wikipedia squad tables).",
+    "No heatmaps, tracking, chemistry, or tactical profiles yet.",
+    "midfield rating omitted (no midfield-specific metric in source)."
+  ]
+}

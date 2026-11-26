@@ -6,10 +6,14 @@
 		SectionTitle,
 		LeagueTable,
 		MonteCarloPanel,
-		Banner
+		Banner,
+		DatasetManager
 	} from '$lib/ui';
 	import { useI18n } from '$lib/i18n';
-	import { leagues, clubs, toClubTeam } from '$lib/engine/data';
+	import { getDefaultDataset } from '$lib/engine/dataset';
+	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
+	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createTournament,
 		advance,
@@ -24,7 +28,10 @@
 
 	const i18n = useI18n();
 
-	const allClubs = $derived(clubs.map(toClubTeam));
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'league'));
+	const leaguePresets = ['bundesliga', 'premier-league', 'la-liga', 'serie-a', 'ligue-1'].map((id) => ({ id, name: `Fictional ${id}` }));
+	const allClubs = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
+	const teamsForPreset = (id: string) => routeTeamsForCompetition(dataset, `competition-fictional-${id}`, 18);
 	const clubById = $derived(new Map(allClubs.map((t) => [t.id, t])));
 
 	let presetId = $state('bundesliga');
@@ -35,12 +42,12 @@
 	let copied = $state(false);
 	let matchday = $state(1);
 
-	const presetOptions = $derived(leagues.map((l) => ({ value: l.id, label: l.name })));
+	const presetOptions = $derived(leaguePresets.map((l) => ({ value: l.id, label: l.name })));
 
 	function applyPreset(id: string) {
-		const league = leagues.find((l) => l.id === id);
+		const league = leaguePresets.find((l) => l.id === id);
 		if (!league) return;
-		teams = league.clubs.map(toClubTeam);
+		teams = teamsForPreset(league.id);
 		season = null;
 		matchday = 1;
 	}
@@ -150,6 +157,7 @@
 <div class="mx-auto max-w-6xl px-4 py-12">
 	<SectionTitle emoji="⚽" title={i18n.t('league.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('league.subtitle')}</p>
+	<DatasetManager />
 
 	<!-- Config -->
 	<div class="mt-8 grid gap-4 md:grid-cols-3">

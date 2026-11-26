@@ -6,10 +6,14 @@
 		ProbabilityBar,
 		ChaosSlider,
 		SectionTitle,
-		Banner
+		Banner,
+		DatasetManager
 	} from '$lib/ui';
 	import { useI18n } from '$lib/i18n';
-	import { nations, toTeam } from '$lib/engine/data';
+	import { toEngineTeams } from '$lib/engine/dataset/adapter';
+	import { getDefaultDataset } from '$lib/engine/dataset';
+	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { expectedGoals } from '$lib/engine/elo';
 	import { matchProbabilities, simulateMatch } from '$lib/engine/poisson';
 	import { rngFromString } from '$lib/engine/prng';
@@ -17,14 +21,14 @@
 
 	const i18n = useI18n();
 
-	const lang = $derived(i18n.lang);
-	const allTeams = $derived(nations.map((n) => toTeam(n, lang)));
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'match'));
+	const allTeams = $derived(toEngineTeams(dataset, { asOf: '2026-11-26' }));
 	const teamById = $derived(new Map(allTeams.map((t) => [t.id, t])));
 	const teamOptions = $derived(allTeams.map((t) => ({ value: t.id, label: t.name })));
 
 	// Default: top two nations so a visitor can hit "Simulate" immediately.
-	let homeId = $state('ger');
-	let awayId = $state('fra');
+	let homeId = $state('team-fictional-alpha');
+	let awayId = $state('team-fictional-beta');
 	const home = $derived(teamById.get(homeId) ?? allTeams[0]);
 	const away = $derived(teamById.get(awayId) ?? allTeams[1]);
 
@@ -144,6 +148,7 @@
 <div class="mx-auto max-w-4xl px-4 py-12">
 	<SectionTitle emoji="⚽" title={i18n.t('match.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('match.subtitle')}</p>
+	<DatasetManager />
 
 	<!-- Team pickers -->
 	<div class="mt-8 grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-end">

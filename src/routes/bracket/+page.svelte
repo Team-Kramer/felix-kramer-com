@@ -4,10 +4,14 @@
 		Select,
 		SectionTitle,
 		Bracket,
-		Banner
+		Banner,
+		DatasetManager
 	} from '$lib/ui';
 	import { useI18n } from '$lib/i18n';
-	import { nations, toTeam } from '$lib/engine/data';
+	import { getDefaultDataset } from '$lib/engine/dataset';
+	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
+	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createSingleBracket,
 		createDoubleBracket,
@@ -22,8 +26,9 @@
 	import type { BracketMatch, Team } from '$lib/engine/types';
 
 	const i18n = useI18n();
-	const lang = $derived(i18n.lang);
-	const allTeams = $derived(nations.map((n) => toTeam(n, lang)));
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'bracket'));
+	const allTeams = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
+	const bracketTeams = $derived(routeTeamsForCompetition(dataset, 'competition-fictional-bracket', 64));
 	const teamById = $derived(new Map(allTeams.map((t) => [t.id, t])));
 
 	type Format = 'single' | 'double';
@@ -43,8 +48,8 @@
 
 	function pickTeams(): Team[] {
 		const pool = seeded
-			? [...allTeams].sort((a, b) => b.elo - a.elo)
-			: [...allTeams].sort(() => Math.random() - 0.5);
+			? [...bracketTeams].sort((a, b) => b.elo - a.elo)
+			: [...bracketTeams].sort(() => Math.random() - 0.5);
 		return pool.slice(0, teamCount);
 	}
 
@@ -122,7 +127,7 @@
 		reverse = data.reverse;
 		teams = data.teamIds
 			.map((id) => teamById.get(id))
-			.filter((t): t is Team => t !== undefined);
+			.filter((t): t is NonNullable<typeof t> => t !== undefined);
 		matches = data.matches;
 	}
 
@@ -190,6 +195,7 @@
 <div class="mx-auto max-w-6xl px-4 py-12">
 	<SectionTitle emoji="🎯" title={i18n.t('bracket.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('bracket.subtitle')}</p>
+	<DatasetManager />
 
 	<!-- Config -->
 	<div class="mt-8 grid gap-4 md:grid-cols-4">

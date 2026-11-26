@@ -5,10 +5,15 @@
 		SectionTitle,
 		FormationBuilder,
 		ResultCard,
-		Banner
+		Banner,
+		DatasetManager
 	} from '$lib/ui';
 	import { useI18n } from '$lib/i18n';
-	import { players, nationsById } from '$lib/engine/data';
+	import { getDefaultDataset } from '$lib/engine/dataset';
+	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
+	import { routeTeams } from '$lib/engine/dataset/adapter';
+	import { toDraftPlayers } from '$lib/engine/dataset/draft-adapter';
 	import {
 		createDraft,
 		drawCard,
@@ -25,6 +30,8 @@
 	import { rngFromString } from '$lib/engine/prng';
 
 	const i18n = useI18n();
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'draft'));
+	const players = $derived(toDraftPlayers(dataset));
 
 	let formationId = $state('4-3-3');
 	let playstyle = $state<Playstyle>('balanced');
@@ -103,11 +110,10 @@
 
 	function startCampaign() {
 		if (!draft || !complete) return;
-		const pool = nationsById;
-		const teams = [...pool.values()].map((n) => ({
-			id: n.id,
-			name: n.name.en,
-			elo: n.elo
+		const teams = routeTeams(dataset).slice(0, 16).map((team) => ({
+			id: team.id,
+			name: team.name,
+			elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500
 		}));
 		campaignResult = runCampaign({
 			xi: draft,
@@ -118,7 +124,7 @@
 		});
 	}
 
-	const nationName = (id: string) => nationsById.get(id)?.name.en ?? id;
+	const nationName = (id: string) => id;
 </script>
 
 <svelte:head>
@@ -129,6 +135,7 @@
 <div class="mx-auto max-w-6xl px-4 py-12">
 	<SectionTitle emoji="🃏" title={i18n.t('draft.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('draft.subtitle')}</p>
+	<DatasetManager />
 
 	<!-- Config -->
 	<div class="mt-8 grid gap-4 md:grid-cols-4">
