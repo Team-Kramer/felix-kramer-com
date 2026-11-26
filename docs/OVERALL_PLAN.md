@@ -1,8 +1,8 @@
 # Felix Kramer Football Data Platform — Overall Implementation Plan
 
-**Updated:** 2026-11-26  
+**Updated:** 2026-11-27  
 **Owner:** Felix Kramer  
-**Overall status:** In progress — M0 complete, M1 in progress  
+**Overall status:** In progress — M0–M4 complete, M5 in progress  
 **Target:** Working `felix-kramer.com` deployment on GitHub Pages with a complete first Bundesliga 2026/27 dataset
 
 ## Objective
@@ -121,12 +121,12 @@ checkboxes into this document.
 | Milestone | Status | Depends on | Release gate |
 |---|---|---|---|
 | M0. Baseline captured | Complete | — | Check, 18 test files/213 tests, and static build verified on 2026-11-26 |
-| M1. Contracts introduced | In progress | M0 | Contracts, JSON Schema, fixtures, validation, and engine adapter added; route migration remains |
-| M2. Fictional dataset path | Not started | M1 | Simulator works through dataset adapters with fictional defaults |
-| M3. Local import/export | In progress | M2 | JSON round-trip, localStorage, Svelte store, and first manager UI exist; profiles/IndexedDB remain |
-| M3.5. Browser-only runtime | Not started | M3 | Client-only engine, workers, storage, and profile loading work |
-| M4. Historical model integrated | Not started | M3.5 | Snapshots, memberships, matches, and history work end to end |
-| M5. Creation tool foundation | Not started | M4 | Internal catalog can create the canonical entities and validate them |
+| M1. Contracts introduced | Complete | M0 | Contracts, JSON Schema, fixtures, validation, and engine adapter added (commit 656cc0b) |
+| M2. Fictional dataset path | Complete | M1 | All five simulator routes consume the dataset store with fictional fallback (commit 4842900) |
+| M3. Local import/export | Complete | M2 | JSON round-trip, localStorage, store, manager UI, export profiles, and IndexedDB fallback (commits 23ab962, 53ddc47) |
+| M3.5. Browser-only runtime | In progress | M3 | Storage and profile loading work; Web Workers for simulations remain |
+| M4. Historical model integrated | Complete | M3.5 | Temporal adapters with 27 tests; minimal datasets remain functional (commit efbd3ff) |
+| M5. Creation tool foundation | In progress | M4 | /editor route with CRUD operations, stable IDs, and live validation (commit 821e9d2); catalog seeding and public-import verification remain |
 | M6. Detailed model capabilities | Not started | M5 | Attributes, roles, chemistry, spatial data, and provenance export correctly |
 | M7. Bundesliga dataset batches | Not started | M6 | Dataset grows in verified batches without breaking the site |
 | M8. Size and distribution decision | Not started | M7 | JSON, compressed package, sidecars, and browser profile are measured |
@@ -156,7 +156,7 @@ ignore-file changes listed by `git status`; none were reverted.
 
 ### Phase 1 — Introduce contracts without changing behavior
 
-- [ ] Complete the domain decisions and ID policy in the creation-tool plan.
+- [x] Complete the domain decisions and ID policy in the creation-tool plan.
 - [x] Implement the initial canonical TypeScript contracts in parallel with existing data access.
 - [x] Add runtime validation for schema identity, required collections, unique IDs, and core references.
 - [x] Add the canonical JSON Schema file.
@@ -165,10 +165,10 @@ ignore-file changes listed by `git status`; none were reverted.
 - [x] Validate that fixtures can represent the intended Bundesliga entity structure.
 - [x] Extend runtime validation for temporal intervals, ranges, match consistency,
   heatmap dimensions, and provenance references.
-- [ ] Add compatibility adapters from the existing data shape to the new engine contracts.
-- [ ] Keep existing simulator routes on the compatibility path until adapter tests pass.
+- [x] Add compatibility adapters from the existing data shape to the new engine contracts.
+- [x] Keep existing simulator routes on the compatibility path until adapter tests pass.
 - [x] Run check, focused tests, full tests, and production build.
-- [ ] Commit only the contract and adapter increment.
+- [x] Commit only the contract and adapter increment.
 
 **Gate:** The application behaves as before, while the new contract is available and
 validated behind adapters.
@@ -193,35 +193,41 @@ still open.
 - [x] Add the fictional default dataset through the new dataset module.
 - [x] Route one simulator through the dataset store and adapter layer.
 - [x] Verify its behavior against the pre-migration baseline.
-- [ ] Migrate the remaining simulator routes incrementally.
-- [ ] Add the empty-state behavior without making the existing site unusable.
-- [ ] Remove only the first proven direct real-data dependency.
-- [ ] Run route smoke tests, type-checking, focused tests, and production build.
-- [ ] Commit each route migration as a small, reversible change.
+- [x] Migrate the remaining simulator routes incrementally.
+- [x] Add the empty-state behavior without making the existing site unusable.
+- [x] Remove only the first proven direct real-data dependency.
+- [x] Run route smoke tests, type-checking, focused tests, and production build.
+- [x] Commit each route migration as a small, reversible change.
 
 **Gate:** All simulators run from the fictional dataset path, and the old behavior
 remains available as a controlled fallback during migration.
 
 **Progress:** [dataset/index.ts](/Users/kram030/git/felix-kramer-com/src/lib/engine/dataset/index.ts)
-now exposes a validated fictional default and an engine-team adapter. No simulator
-the [match route](/Users/kram030/git/felix-kramer-com/src/routes/match/+page.svelte)
-now consumes it with the original simulation controls and a fictional two-team
-fallback. The remaining routes still use their existing data path until their
-larger team-count and player-pool requirements are migrated.
+now exposes a validated fictional default and an engine-team adapter. All five
+simulator routes ([match](/Users/kram030/git/felix-kramer-com/src/routes/match/+page.svelte),
+[league](/Users/kram030/git/felix-kramer-com/src/routes/league/+page.svelte),
+[tournament](/Users/kram030/git/felix-kramer-com/src/routes/tournament/+page.svelte),
+[bracket](/Users/kram030/git/felix-kramer-com/src/routes/bracket/+page.svelte),
+[draft](/Users/kram030/git/felix-kramer-com/src/routes/draft/+page.svelte))
+consume the dataset store with the original simulation controls and a fictional
+fallback. [routeTeams](/Users/kram030/git/felix-kramer-com/src/lib/engine/dataset/adapter.ts)
+and [toDraftPlayers](/Users/kram030/git/felix-kramer-com/src/lib/engine/dataset/draft-adapter.ts)
+generate deterministic fictional pools when the dataset does not provide enough
+entities. Commit 4842900.
 
 ### Phase 3 — Add local import and export
 
 - [x] Implement JSON parsing and structural validation.
 - [x] Implement referential, temporal, range, and provenance validation.
 - [x] Implement local persistence with `localStorage` for small datasets.
-- [ ] Add an IndexedDB decision point based on measured dataset size.
+- [x] Add an IndexedDB decision point based on measured dataset size.
 - [x] Implement JSON import and export in the dataset manager.
-- [ ] Add export profile selection without exposing internal-only fields.
+- [x] Add export profile selection without exposing internal-only fields.
 - [x] Add round-trip tests for the detailed canonical fixture.
 - [x] Add clear validation errors with field paths and record IDs.
-- [ ] Verify that no dataset contents are sent to a server.
-- [ ] Run the static production build and test the import UI in the built site.
-- [ ] Commit import/export as a complete, independently usable increment.
+- [x] Verify that no dataset contents are sent to a server.
+- [x] Run the static production build and test the import UI in the built site.
+- [x] Commit import/export as a complete, independently usable increment.
 
 **Gate:** A user can import, reload, export, and re-import a valid fictional
 dataset locally without breaking any simulator route.
