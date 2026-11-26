@@ -150,12 +150,17 @@
 	--on-gold: #121212;
 	--on-coral: #ffffff;
 
-	--transition-fast: 150ms ease;
-	--transition-base: 200ms ease;
-	--transition-panel: 200ms ease;
-	--transition-toast-in: 200ms ease;
-	--transition-toast-out: 300ms ease;
-	--transition-glide: 350ms cubic-bezier(0.65, 0, 0.35, 1);
+	/* Easing curves (easing.dev "strong" variants — built-in CSS easings are too weak) */
+	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+	--transition-fast: 150ms var(--ease-out);
+	--transition-base: 200ms var(--ease-out);
+	--transition-panel: 200ms var(--ease-out);
+	--transition-toast-in: 200ms var(--ease-out);
+	--transition-toast-out: 250ms var(--ease-out);
+	--transition-glide: 350ms var(--spring-ui);
 
 	/* Apple motion (PLAN_STATIC_HOMEPAGE.md Phase 5): springs, interruptibility,
 	   velocity handoff. Damping 1.0 = no overshoot (UI transitions);
@@ -195,12 +200,14 @@ body {
 	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Apple size-specific typography: display text gets tighter tracking + leading */
+/* Apple size-specific typography: display text gets tighter tracking + leading,
+   and headlines balance their lines instead of ragging out. */
 .text-display {
 	font-size: var(--text-display);
 	line-height: 1.05;
 	font-weight: var(--font-weight-display);
 	letter-spacing: var(--tracking-display);
+	text-wrap: balance;
 }
 
 .text-headline-lg {
@@ -208,6 +215,7 @@ body {
 	line-height: 1.1;
 	font-weight: var(--font-weight-headline-lg);
 	letter-spacing: var(--tracking-headline-lg);
+	text-wrap: balance;
 }
 
 .text-headline-md {
@@ -215,6 +223,7 @@ body {
 	line-height: 1.2;
 	font-weight: var(--font-weight-headline-md);
 	letter-spacing: var(--tracking-headline-md);
+	text-wrap: balance;
 }
 
 /* Gradient text (Ania #8) — accent → bright, with static fallback */
@@ -249,6 +258,23 @@ body {
 	}
 }
 
+/* Scroll-edge effect: a soft shadow fades in under floating chrome only
+   while content scrolls beneath it — replaces a hard divider. */
+.header-edge::after {
+	position: absolute;
+	inset-inline: 0;
+	inset-block-end: -14px;
+	height: 14px;
+	background: linear-gradient(to bottom, rgb(0 0 0 / 45%), transparent);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--transition-base) var(--ease-out);
+}
+
+.header-edge[data-scrolled='true']::after {
+	opacity: 1;
+}
+
 .icon-glow {
 	--icon-glow: var(--shadow-teal-glow);
 	transition:
@@ -256,9 +282,12 @@ body {
 		box-shadow var(--transition-fast);
 }
 
-.icon-glow:hover {
-	transform: translateY(-4px);
-	box-shadow: var(--icon-glow);
+/* Transform hovers only on devices that actually hover */
+@media (hover: hover) and (pointer: fine) {
+	.icon-glow:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--icon-glow);
+	}
 }
 
 .icon-glow:active {
@@ -355,9 +384,11 @@ body {
 		box-shadow var(--transition-fast);
 }
 
-.hover-lift:hover {
-	transform: translateY(-3px);
-	box-shadow: var(--shadow-teal-glow);
+@media (hover: hover) and (pointer: fine) {
+	.hover-lift:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-teal-glow);
+	}
 }
 
 @property --angle {

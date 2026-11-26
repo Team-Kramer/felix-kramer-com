@@ -40,7 +40,7 @@
 		aria-valuenow={pct}
 	>
 		<div
-			class="h-full rounded-full transition-[width] duration-300 ease-out {FILL[color] ?? FILL.accent}"
+			class="h-full rounded-full transition-[width] duration-200 ease-out {FILL[color] ?? FILL.accent}"
 			style:width="{pct}%"
 		></div>
 	</div>

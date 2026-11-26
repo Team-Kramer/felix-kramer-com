@@ -63,7 +63,7 @@
 	{#each positioned as { slot, left, top } (slot.id)}
 		{@const player = players[slot.id]}
 		<div
-			class="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out {compact ? 'scale-75' : ''}"
+			class="absolute -translate-x-1/2 -translate-y-1/2 transition-[left,top] duration-200 ease-out {compact ? 'scale-75' : ''}"
 			style:left="{left}%"
 			style:top="{top}%"
 		>
