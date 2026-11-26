@@ -129,7 +129,7 @@ checkboxes into this document.
 | M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
 | M7. Bundesliga dataset batches | In progress | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Remaining: player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
-| M8. Size and distribution decision | Complete | M7 | M8 measurement commit (4c1e9ca): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
+| M8. Size and distribution decision | Complete | M7 | M8 measurement commit (1d5386e): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
 | M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
 | M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |
 
