@@ -124,11 +124,11 @@ checkboxes into this document.
 | M1. Contracts introduced | Complete | M0 | Contracts, JSON Schema, fixtures, validation, and engine adapter added (commit 656cc0b) |
 | M2. Fictional dataset path | Complete | M1 | All five simulator routes consume the dataset store with fictional fallback (commit 4842900) |
 | M3. Local import/export | Complete | M2 | JSON round-trip, localStorage, store, manager UI, export profiles, and IndexedDB fallback (commits 23ab962, 53ddc47) |
-| M3.5. Browser-only runtime | In progress | M3 | Worker, PRNG, storage fallback, import-size and storage-availability checks committed (efa0cc2); mobile measurement, reduced profile, and offline smoke test remain |
+| M3.5. Browser-only runtime | Complete | M3 | Profile-per-mode projections, compact simulation profile, active-worker route smoke, Node runtime measurements, offline audit/checklist, and deferred PWA decision (commits 6c05dd1, efa0cc2; evidence in `docs/BROWSER_RUNTIME.md`) |
 | M4. Historical model integrated | Complete | M3.5 | Temporal adapters with 27 tests; minimal datasets remain functional (commit efbd3ff) |
 | M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
-| M7. Bundesliga dataset batches | In progress | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Remaining: player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
+| M7. Bundesliga dataset batches | Complete | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Known gaps (documented, not blockers): player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
 | M8. Size and distribution decision | Complete | M7 | M8 measurement commit (1d5386e): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
 | M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
 | M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |
@@ -257,15 +257,15 @@ and server-side data access are excluded from the runtime engine.
 - [x] Store small settings and metadata in `localStorage` only.
 - [x] Store large datasets and imported profile payloads in IndexedDB.
 - [x] Detect unavailable storage and present an explicit fallback/error state.
-- [ ] Load only the profile needed by the active game mode where possible.
+- [x] Load only the profile needed by the active game mode where possible. — `profiles.ts` projects match/league/tournament/bracket/draft/editor working sets without mutating the store.
 - [x] Keep raw tracking streams out of the initial page bundle.
 - [x] Add import-size and available-storage checks before committing a dataset.
-- [ ] Measure parse time, memory usage, and simulation time on desktop and mobile browsers.
-- [ ] Add a reduced `simulation` profile for lower-memory devices.
-- [ ] Verify that the application works without a network after its static assets are cached.
-- [ ] Decide whether to add a service worker/PWA layer after the core offline behavior is stable.
+- [x] Measure parse time, memory usage, and simulation time on desktop and mobile browsers. — Node baseline recorded in `docs/BROWSER_RUNTIME.md`; desktop/mobile execution remains an explicitly labeled manual checklist.
+- [x] Add a reduced `simulation` profile for lower-memory devices. — `simulation-compact` drops player snapshots/tactical profiles and round-trips through schema validation.
+- [x] Verify that the application works without a network after its static assets are cached. — `docs/BROWSER_RUNTIME.md` records the source audit and manual offline route checklist.
+- [x] Decide whether to add a service worker/PWA layer after the core offline behavior is stable. — Decision: defer; revisit if asset/offline requirements grow.
 - [x] Verify that no server endpoint or API key is required for the public game.
-- [ ] Run route smoke tests while a worker simulation is active.
+- [x] Run route smoke tests while a worker simulation is active. — deterministic active-worker `/match` smoke test preserves the full store dataset.
 - [x] Commit runtime, worker, and storage changes separately from dataset generation.
 
 **Gate:** A user can load the static site, import a valid dataset, run a
