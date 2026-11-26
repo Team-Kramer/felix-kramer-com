@@ -31,7 +31,7 @@
 		bind:value
 		{disabled}
 		{required}
-		class="w-full min-h-10 cursor-pointer appearance-none rounded-md border border-line bg-surface-cream px-3 pr-9 text-ink font-normal focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:shadow-focus [background-image:url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a7a7a7%27%20stroke-width=%272%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]"
+		class="select-control w-full min-h-10 cursor-pointer appearance-none rounded-md border border-line bg-surface-cream px-3 pr-9 text-ink font-normal focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:shadow-focus [background-image:url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a7a7a7%27%20stroke-width=%272%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]"
 		onchange={(event) => onchange?.(event.currentTarget.value)}
 	>
 		{#each options as option (option.value)}
@@ -39,3 +39,11 @@
 		{/each}
 	</select>
 </label>
+
+<style>
+	.select-control {
+		background-repeat: no-repeat;
+		background-position: right 0.75rem center;
+		background-size: 1.25rem 1.25rem;
+	}
+</style>
