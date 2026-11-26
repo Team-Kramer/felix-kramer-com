@@ -1,8 +1,8 @@
 # Football Dataset Creation Tool — Implementation Plan
 
-**Updated:** 2026-11-25  
+**Updated:** 2026-11-26  
 **Owner:** Felix Kramer  
-**Overall status:** Not started
+**Overall status:** Implemented through M9; final hosted profile verification pending
 
 ## Objective
 
