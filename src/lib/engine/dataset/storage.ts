@@ -22,6 +22,41 @@ function hasIndexedDb(): boolean {
 	return typeof indexedDB !== 'undefined';
 }
 
+/**
+ * Verifies that at least one storage backend accepts a write.
+ * Throws a DatasetStorageError when neither localStorage nor IndexedDB is usable.
+ */
+export async function checkStorageAvailable(): Promise<void> {
+	const storage = getStorage();
+	if (storage) {
+		const probeKey = `${DATASET_STORAGE_KEY}-probe`;
+		try {
+			storage.setItem(probeKey, '1');
+			storage.removeItem(probeKey);
+			return;
+		} catch {
+			// fall through to IndexedDB
+		}
+	}
+	if (!hasIndexedDb()) throw new DatasetStorageError('No browser storage is available.');
+	try {
+		await new Promise<void>((resolve, reject) => {
+			const request = indexedDB.open('fk-storage-probe', 1);
+			request.onupgradeneeded = () => request.result.createObjectStore('probe');
+			request.onsuccess = () => {
+				const db = request.result;
+				const tx = db.transaction('probe', 'readwrite');
+				tx.objectStore('probe').put('1', 'key');
+				tx.oncomplete = () => { db.close(); resolve(); };
+				tx.onerror = () => { db.close(); reject(tx.error); };
+			};
+			request.onerror = () => reject(request.error);
+		});
+	} catch (error) {
+		throw new DatasetStorageError('Browser storage is not available.', error);
+	}
+}
+
 export function loadStoredDataset(): FootballDataset | null | Promise<FootballDataset | null> {
 	const storage = getStorage();
 	let serialized: string | null = null;

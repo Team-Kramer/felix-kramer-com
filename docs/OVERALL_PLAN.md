@@ -1,8 +1,8 @@
 # Felix Kramer Football Data Platform — Overall Implementation Plan
 
-**Updated:** 2026-11-27  
+**Updated:** 2026-11-28  
 **Owner:** Felix Kramer  
-**Overall status:** In progress — M0–M4 complete, M5 in progress  
+**Overall status:** In progress — M0–M6 complete, M3.5/M7 in progress  
 **Target:** Working `felix-kramer.com` deployment on GitHub Pages with a complete first Bundesliga 2026/27 dataset
 
 ## Objective
@@ -126,9 +126,9 @@ checkboxes into this document.
 | M3. Local import/export | Complete | M2 | JSON round-trip, localStorage, store, manager UI, export profiles, and IndexedDB fallback (commits 23ab962, 53ddc47) |
 | M3.5. Browser-only runtime | In progress | M3 | Storage and profile loading work; Web Workers for simulations remain |
 | M4. Historical model integrated | Complete | M3.5 | Temporal adapters with 27 tests; minimal datasets remain functional (commit efbd3ff) |
-| M5. Creation tool foundation | In progress | M4 | /editor route with CRUD operations, stable IDs, and live validation (commit 821e9d2); catalog seeding and public-import verification remain |
-| M6. Detailed model capabilities | Not started | M5 | Attributes, roles, chemistry, spatial data, and provenance export correctly |
-| M7. Bundesliga dataset batches | Not started | M6 | Dataset grows in verified batches without breaking the site |
+| M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
+| M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
+| M7. Bundesliga dataset batches | In progress | M6 | Synthetic seed batch committed (def0bb4); real-data batches pending licensing review of sources (football-data.co.uk, openfootball reachable) |
 | M8. Size and distribution decision | Not started | M7 | JSON, compressed package, sidecars, and browser profile are measured |
 | M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
 | M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |

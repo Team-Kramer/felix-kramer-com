@@ -75,6 +75,11 @@
 	<p class="mt-3 text-caption text-ink-tertiary">
 		Exportierte JSON-Dateien können privat über Google Drive, Dropbox oder OneDrive geteilt werden.
 	</p>
+	{#if !datasetStore.storageAvailable}
+		<p class="mt-2 text-sm text-coral" role="alert">
+			Browser-Speicher ist nicht verfügbar — Änderungen werden nicht gespeichert und gehen beim Schließen verloren.
+		</p>
+	{/if}
 	{#if datasetStore.error}
 		<p class="mt-2 text-sm text-coral" role="alert">{datasetStore.error}</p>
 	{/if}

@@ -1,7 +1,7 @@
 import { getDefaultDataset } from './index';
 import { DatasetValidationError, validateDataset } from './schema';
 import { importDatasetFile } from './import';
-import { clearStoredDataset, loadStoredDataset, saveStoredDataset } from './storage';
+import { checkStorageAvailable, clearStoredDataset, loadStoredDataset, saveStoredDataset } from './storage';
 import { serializeDataset } from './export';
 import type { FootballDataset } from './types';
 
@@ -9,16 +9,27 @@ export const datasetStore = $state<{
 	dataset: FootballDataset | null;
 	isUserDataset: boolean;
 	initialized: boolean;
+	storageAvailable: boolean;
 	error: string | null;
 }>({
 	dataset: null,
 	isUserDataset: false,
 	initialized: false,
+	storageAvailable: true,
 	error: null,
 });
 
 export async function initializeDataset(): Promise<void> {
 	if (datasetStore.initialized) return;
+	try {
+		await checkStorageAvailable();
+	} catch (error) {
+		datasetStore.storageAvailable = false;
+		datasetStore.dataset = getDefaultDataset();
+		datasetStore.error = error instanceof Error ? error.message : 'Browser storage is not available.';
+		datasetStore.initialized = true;
+		return;
+	}
 	try {
 		const stored = await loadStoredDataset();
 		if (stored) {
@@ -38,10 +49,11 @@ export async function initializeDataset(): Promise<void> {
 export async function importDatasetFileIntoStore(file: File): Promise<void> {
 	try {
 		const dataset = await importDatasetFile(file);
+		// Persist first so the in-memory state never diverges from storage.
+		await saveStoredDataset(dataset);
 		datasetStore.dataset = dataset;
 		datasetStore.isUserDataset = true;
 		datasetStore.error = null;
-		await saveStoredDataset(dataset);
 	} catch (error) {
 		datasetStore.error = error instanceof Error ? error.message : 'Dataset import failed.';
 		throw error;
@@ -49,7 +61,11 @@ export async function importDatasetFileIntoStore(file: File): Promise<void> {
 }
 
 export async function resetDataset(): Promise<void> {
-	await clearStoredDataset();
+	try {
+		await clearStoredDataset();
+	} catch {
+		// Storage unavailable — the in-memory reset below is still applied.
+	}
 	datasetStore.dataset = getDefaultDataset();
 	datasetStore.isUserDataset = false;
 	datasetStore.error = null;
