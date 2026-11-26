@@ -2,7 +2,7 @@
 
 **Updated:** 2026-11-28  
 **Owner:** Felix Kramer  
-**Overall status:** In progress — M0–M6 complete, M3.5/M7 in progress (M7 batch 1 committed 7694feb)  
+**Overall status:** In progress — M0–M6 complete, M3.5/M7 in progress (M7 batch 1 `7694feb` + batch 2 players `2e77a3e` committed)  
 **Target:** Working `felix-kramer.com` deployment on GitHub Pages with a complete first Bundesliga 2026/27 dataset
 
 ## Objective
@@ -128,7 +128,7 @@ checkboxes into this document.
 | M4. Historical model integrated | Complete | M3.5 | Temporal adapters with 27 tests; minimal datasets remain functional (commit efbd3ff) |
 | M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
-| M7. Bundesliga dataset batches | In progress | M6 | Batch 1 committed (7694feb): 18 teams, 90 matches, derived Elo, provenance; schema-valid, 0.086 MiB. Batch 2 (players) pending |
+| M7. Bundesliga dataset batches | In progress | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Remaining: player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
 | M8. Size and distribution decision | Not started | M7 | JSON, compressed package, sidecars, and browser profile are measured |
 | M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
 | M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |
@@ -329,20 +329,20 @@ be added in batches, never as one unreviewed bulk change.
 - [x] Confirm the exact season and competition scope (`Bundesliga 2026/27`).
 - [x] Create the competition and season records. — `competition-bundesliga`, `season-bundesliga-2026-27`
 - [x] Create and verify all participating team identities and aliases. — 18 clubs, canonical German names cross-checked against openfootball (0 mismatches)
-- [x] Record team participation and current squad boundaries. — 18 participations with position + points (squad boundaries arrive with player batch)
-- [ ] Create independent player identities.
-- [ ] Match players to teams through dated memberships.
-- [ ] Add current player attributes with source, confidence, and assessment type.
+- [x] Record team participation and current squad boundaries. — 18 participations with position + points; squad boundaries captured via 502 memberships
+- [x] Create independent player identities. — 502 first-team players (stable kebab-case ids, canonical names, ISO 3166-1 alpha-3 nationalities, positions); 0 id collisions, 0 cross-club duplicate names
+- [x] Match players to teams through dated memberships. — 502 memberships (squad number, `validFrom` 2026-08-01, n:m-ready)
+- [ ] Add current player attributes with source, confidence, and assessment type. — identity-level snapshots exist (`assessmentType: imported`, `sourceRefs` → Wikipedia) but **no attribute values**: no legal/public source for real per-player ratings, so none are invented. Detailed attributes arrive with the internal tool (PLAN.md Phase 3).
 - [x] Add team snapshots and tactical profiles. — 18 team snapshots (derived Elo K=32 + attack/defense from results); tactical profiles deferred (no source)
 - [x] Add available match and season history. — 90 finished matches + 180 team-stats events (xG, shots, cards)
-- [ ] Add chemistry and derived values only when their derivation is documented.
-- [ ] Add heatmaps and tracking references where legally and technically available.
-- [x] Validate each team batch before adding the next batch. — `validateDataset` passes; committed file re-validated on disk
-- [ ] Record missing, estimated, unavailable, and disputed data explicitly.
-- [ ] Verify that no player is duplicated because of a transfer, alias, or competition.
-- [x] Export a simulation profile after every accepted batch. — compact JSON 0.086 MiB / gzip 0.007 MiB
+- [ ] Add chemistry and derived values only when their derivation is documented. — **Deferred:** no public source for team chemistry / pairwise affinity; will arrive with the internal tool (PLAN.md Phase 6) once a documented derivation exists.
+- [ ] Add heatmaps and tracking references where legally and technically available. — **Deferred:** no legal public tracking/heatmap data for the current Bundesliga season; will arrive with the internal tool (PLAN.md Phase 5).
+- [x] Validate each team batch before adding the next batch. — `validateDataset` passes; committed file re-validated on disk (batch 2: 502/502/502 players/memberships/snapshots)
+- [x] Record missing, estimated, unavailable, and disputed data explicitly. — `size-report.json` `gaps[]` + per-source provenance `notes` (no DOB/preferredFoot; no attributes; no heatmaps/tracking/chemistry)
+- [x] Verify that no player is duplicated because of a transfer, alias, or competition. — 502 unique player ids; 0 cross-club duplicate names; disambiguation suffixes stripped before id generation
+- [x] Export a simulation profile after every accepted batch. — compact JSON 0.381 MiB / gzip 0.033 MiB (batch 2)
 - [x] Import each accepted batch into the public simulator and run smoke tests. — `toEngineTeams`/`teamsForCompetition` resolve all 18 teams with finite Elo
-- [x] Commit each reviewed data batch separately from code changes. — batch 1: `7694feb` (script + `data/bundesliga-2026-27-real/`)
+- [x] Commit each reviewed data batch separately from code changes. — batch 1: `7694feb`; batch 2 (players): `2e77a3e` (fetch tool + build update + `data/bundesliga-2026-27-real/`)
 
 **Gate:** The complete target dataset has all intended teams and players, valid
 relationships, documented gaps, and reproducible source/provenance information.
@@ -429,7 +429,7 @@ from the detailed plans here.
 | Internal creation tool | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phase 3 | Complete | /editor route with 9 tabs, CRUD, live validation, seed (M5/M6, commits 821e9d2, def0bb4, 4dcb9cc) |
 | Historical model | Both detailed plans | Complete | Temporal adapters, 27 history tests (M4, commit efbd3ff) |
 | Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Complete | Attributes, roles, chemistry, matches, provenance in seed round-trip (M6, commit 4dcb9cc) |
-| Bundesliga dataset | This plan, Phase 7 | In progress | Batch 1 committed (7694feb): 18 teams, 90 matches, derived Elo, provenance, schema-valid; batch 2 (players) next |
+| Bundesliga dataset | This plan, Phase 7 | In progress | Batches 1+2 committed (7694feb, 2e77a3e): 18 teams, 90 matches, derived Elo, 502 players + memberships + identity snapshots, provenance, schema-valid, 0.381 MiB; remaining gaps (attributes/chemistry/heatmaps) have no legal public source |
 | Compression and size | This plan, Phase 8 | Not started | Measure before choosing format |
 | Browser-only runtime | This plan, Phase 3.5 | In progress | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
 | Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Complete | All five routes consume the dataset store (M2, commit 4842900) |
@@ -439,7 +439,7 @@ from the detailed plans here.
 
 | Risk / decision | Required evidence | Status |
 |---|---|---|
-| Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Partial — batch 1: 0.086 MiB compact / 0.007 MiB gzip (teams+matches only); re-measure after player batch |
+| Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Partial — batch 2 (full current dataset): 0.381 MiB compact / 0.033 MiB gzip / 0.022 MiB brotli; single JSON is practical, M8 formalizes the decision |
 | localStorage is too small | Browser storage test with release-candidate dataset | Open |
 | Browser UI freezes during simulation | Worker benchmark with progress and cancellation | Open |
 | Browser device has insufficient memory | Reduced profile and mobile stress test | Open |
@@ -447,8 +447,8 @@ from the detailed plans here.
 | Offline support changes cached assets incorrectly | Service-worker decision and cache invalidation test | Open |
 | Raw tracking data is impractical in browser | Sidecar size and profile import test | Open |
 | External data cannot be redistributed | Source/license review and export filtering | Partial — openfootball public domain; football-data.co.uk free per site, no explicit license text found (review flagged); provenance records licenses per source |
-| Current player identities are ambiguous | Duplicate report and manual confirmation log | Open |
-| Historical data is incomplete | Explicit missing-data report in dataset metadata | Open |
+| Current player identities are ambiguous | Duplicate report and manual confirmation log | Mitigated — 502 unique ids, 0 cross-club duplicate names, disambiguation suffixes stripped (batch 2) |
+| Historical data is incomplete | Explicit missing-data report in dataset metadata | Mitigated — `size-report.json` `gaps[]` + per-source provenance `notes` document every missing/unavailable field |
 | Migration breaks a simulator route | Baseline comparison and route smoke test | Open |
 | GitHub Pages build differs from local build | Clean-checkout workflow run and hosted smoke test | Open |
 | Derived values cannot be reproduced | Model version and input provenance test | Open |
