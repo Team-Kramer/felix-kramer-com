@@ -1,20 +1,23 @@
 #!/usr/bin/env node
 /**
- * Build the real Bundesliga 2026/27 dataset (batch 1: teams + results).
+ * Build the real Bundesliga 2026/27 dataset (batch 2: teams + results + players).
  *
  * Sources (see provenance in the generated dataset):
  *   - football-data.co.uk D1.csv  -> finished results, xG, shots, cards (primary)
  *   - openfootball de.1.json       -> public-domain schedule + canonical names
+ *   - Wikipedia club articles      -> first-team squads (players, memberships)
  *
- * The output is a schema-valid canonical FootballDataset (batch 1). Player
- * identities, memberships, attributes, heatmaps and tracking are added in
- * later batches. Team strength (elo / attack / defense) is DERIVED from the
- * real results, never invented.
+ * The output is a schema-valid canonical FootballDataset (batch 2). Player
+ * identities, memberships and identity-level snapshots come from the Wikipedia
+ * squad tables (CC BY-SA 4.0). Detailed attributes, heatmaps and tracking are
+ * added in later batches. Team strength (elo / attack / defense) is DERIVED
+ * from the real results, never invented.
  *
  * Examples:
  *   node --experimental-strip-types scripts/build-bundesliga-real.mjs
  *   node --experimental-strip-types scripts/build-bundesliga-real.mjs \
  *     --csv=/tmp/d1.csv --openfootball=/tmp/openfootball-de1.json \
+ *     --squads=tmp/bundesliga-2026-27-real/squads.json \
  *     --output=tmp/bundesliga-2026-27-real
  *
  * Run with --experimental-strip-types so the script can import the real
@@ -32,6 +35,7 @@ const ROOT = join(fileURLToPath(new URL('..', import.meta.url)));
 const DEFAULTS = {
 	csv: '/tmp/d1.csv',
 	openfootball: '/tmp/openfootball-de1.json',
+	squads: join(ROOT, 'tmp', 'bundesliga-2026-27-real', 'squads.json'),
 	output: join(ROOT, 'tmp', 'bundesliga-2026-27-real'),
 	retrievedAt: new Date().toISOString().slice(0, 10),
 };
@@ -43,6 +47,7 @@ const SEASON_END = '2027-05-31';
 const SOURCE_FDCO_UK = 'source-football-data-cou-uk';
 const SOURCE_OPENFOOTBALL = 'source-openfootball';
 const SOURCE_ELO = 'source-elo-derivation';
+const SOURCE_WIKI_SQUADS = 'source-wikipedia-squads';
 
 // CSV short name -> [canonical German name, stable id, short, primary, secondary]
 // Canonical names mirror openfootball (public domain). IDs are distinct from the
@@ -78,6 +83,108 @@ function parseArgs(argv) {
 		if (key in options) options[key] = value;
 	}
 	return options;
+}
+
+// --- Player batch (squads from Wikipedia, CC BY-SA 4.0) ----------------------
+
+function slugify(name) {
+	return name
+		.toLowerCase()
+		.normalize('NFKD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
+
+// Wikipedia disambiguation suffixes like "(footballer, born 1997)" are not part
+// of the display name.
+function displayPlayerName(name) {
+	return name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+}
+
+const POS_TO_POSITIONS = {
+	GK: ['GK'],
+	DF: ['DF'],
+	MF: ['MF'],
+	FW: ['FW'],
+};
+
+// Wikipedia squad tables use FIFA/IOC flag codes. Normalise to ISO 3166-1
+// alpha-3 so the dataset uses one standard. Codes without an ISO country
+// (e.g. Kosovo) keep the FIFA code.
+const NATION_NORMALIZE = {
+	GER: 'DEU',
+	SUI: 'CHE',
+	NED: 'NLD',
+	ALG: 'DZA',
+	GRE: 'GRC',
+	BUL: 'BGR',
+	ENG: 'GBR',
+	SCO: 'GBR',
+	WAL: 'GBR',
+	IRL: 'IRL',
+	NGR: 'NGA',
+	GUI: 'GIN',
+	GAM: 'GMB',
+	KVX: 'KOS',
+	PHI: 'PHL',
+	HAI: 'HTI',
+	ZAM: 'ZMB',
+};
+
+function normalizeNation(code) {
+	return NATION_NORMALIZE[code] ?? code;
+}
+
+function buildPlayerBatch(squads) {
+	const players = [];
+	const memberships = [];
+	const playerSnapshots = [];
+	const seenIds = new Set();
+
+	for (const squad of squads) {
+		for (const raw of squad.players) {
+			const name = displayPlayerName(raw.name);
+			const playerId = `player-${slugify(name)}`;
+			if (seenIds.has(playerId)) {
+				throw new Error(`Duplicate player id ${playerId} (${name}) in ${squad.teamId}`);
+			}
+			seenIds.add(playerId);
+
+			players.push({
+				id: playerId,
+				canonicalName: name,
+				nationalityCodes: [normalizeNation(raw.nat)],
+				positions: POS_TO_POSITIONS[raw.pos] ?? ['MF'],
+				status: 'active',
+			});
+
+			memberships.push({
+				id: `membership-${playerId}-${squad.teamId}`,
+				playerId,
+				teamId: squad.teamId,
+				role: 'player',
+				contractType: 'permanent',
+				squadNumber: raw.no ?? undefined,
+				validFrom: SEASON_START,
+				validTo: null,
+			});
+
+			// Minimal snapshot: identity-level data only. No invented ratings —
+			// detailed attributes arrive with the internal tool (PLAN.md Phase 3).
+			playerSnapshots.push({
+				id: `player-snapshot-${playerId}-${SEASON_ID}`,
+				playerId,
+				validFrom: SEASON_START,
+				validTo: null,
+				scale: { min: 1, max: 20 },
+				attributes: {},
+				assessmentType: 'imported',
+				sourceRefs: [SOURCE_WIKI_SQUADS],
+			});
+		}
+	}
+	return { players, memberships, playerSnapshots };
 }
 
 // --- CSV parsing (BOM-aware, dd/mm/yyyy) -------------------------------------
@@ -164,6 +271,7 @@ function computeStandings(teamIds, matches) {
 function buildDataset(options) {
 	const csvText = readFileSync(options.csv, 'utf8');
 	const openFootball = JSON.parse(readFileSync(options.openfootball, 'utf8'));
+	const squads = JSON.parse(readFileSync(options.squads, 'utf8'));
 	const rows = parseCsv(csvText);
 
 	const teamIds = Object.values(TEAM_MAP).map(([, id]) => id);
@@ -190,6 +298,16 @@ function buildDataset(options) {
 		aliases: [],
 		colors: { primary, secondary },
 	}));
+
+	// Player batch: every squad teamId must be one of the 18 mapped clubs.
+	const teamIdSet = new Set(teams.map((team) => team.id));
+	const unmappedSquadTeams = [...new Set(squads.squads.map((s) => s.teamId))].filter(
+		(id) => !teamIdSet.has(id)
+	);
+	if (unmappedSquadTeams.length > 0) {
+		throw new Error(`Squad teamId(s) not in TEAM_MAP: ${unmappedSquadTeams.join(', ')}`);
+	}
+	const { players, memberships, playerSnapshots } = buildPlayerBatch(squads.squads);
 
 	// Matches in chronological order (drives elo + standings).
 	const matches = rows
@@ -353,6 +471,19 @@ function buildDataset(options) {
 				'Elo (K=32, base 1500) updated per finished match; attack/defense scaled from goals for/against per match.',
 			notes: 'Derived from the real results above; not an independent measurement.',
 		},
+		{
+			id: SOURCE_WIKI_SQUADS,
+			type: 'imported',
+			provider: 'Wikipedia (en.wikipedia.org)',
+			name: 'Bundesliga 2026/27 first-team squads (18 club articles)',
+			retrievedAt: options.retrievedAt,
+			license: 'CC BY-SA 4.0 (attribution required; see each club article).',
+			method:
+				'Parsed the "Current squad" section of each club article (number, position, nationality, name). Nationality flag codes normalised to ISO 3166-1 alpha-3 (FIFA codes without an ISO country, e.g. Kosovo, kept).',
+			sourceUrl: 'https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga',
+			notes:
+				'Player identities, squad numbers, positions and nationalities. No ratings or attributes are imported from this source — playerSnapshots carry identity-level data only.',
+		},
 	];
 
 	return {
@@ -373,10 +504,10 @@ function buildDataset(options) {
 		seasons,
 		teams,
 		teamParticipations,
-		players: [],
-		memberships: [],
+		players,
+		memberships,
 		teamSnapshots,
-		playerSnapshots: [],
+		playerSnapshots,
 		tacticalProfiles: [],
 		matches: matchRecords,
 		matchAppearances: [],
@@ -418,8 +549,13 @@ function writeOutput(dataset, options, smoke, elapsedMs) {
 	const report = {
 		generatedAt: new Date().toISOString(),
 		script: 'build-bundesliga-real.mjs',
-		batch: '1 (teams + real results + derived team strength)',
-		sources: { csv: options.csv, openfootball: options.openfootball, retrievedAt: options.retrievedAt },
+		batch: '2 (teams + real results + derived strength + player identities/memberships)',
+		sources: {
+			csv: options.csv,
+			openfootball: options.openfootball,
+			squads: options.squads,
+			retrievedAt: options.retrievedAt,
+		},
 		generationMs: Math.round(elapsedMs),
 		records: Object.fromEntries(
 			Object.entries(dataset)
@@ -434,7 +570,8 @@ function writeOutput(dataset, options, smoke, elapsedMs) {
 		},
 		smokeTest: smoke,
 		gaps: [
-			'No player identities, memberships, or player attributes yet (batch 2).',
+			'Player snapshots carry identity-level data only (no ratings/attributes) — detailed attributes arrive with the internal tool.',
+			'No dateOfBirth or preferredFoot yet (not in the Wikipedia squad tables).',
 			'No heatmaps, tracking, chemistry, or tactical profiles yet.',
 			'midfield rating omitted (no midfield-specific metric in source).',
 		],
@@ -444,7 +581,7 @@ function writeOutput(dataset, options, smoke, elapsedMs) {
 	writeFileSync(join(outputDir, 'dataset.pretty.json'), `${pretty}\n`);
 	writeFileSync(join(outputDir, 'size-report.json'), `${JSON.stringify(report, null, 2)}\n`);
 
-	console.log(`Wrote real Bundesliga 2026/27 dataset (batch 1) to ${outputDir}`);
+	console.log(`Wrote real Bundesliga 2026/27 dataset (batch 2) to ${outputDir}`);
 	console.log(`Records: ${JSON.stringify(report.records)}`);
 	console.log(`Sizes: ${JSON.stringify(report.sizes)}`);
 	console.log(`Smoke test: ${JSON.stringify(smoke)}`);
