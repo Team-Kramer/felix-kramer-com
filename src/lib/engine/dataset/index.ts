@@ -4,6 +4,8 @@ import { validateDataset } from './schema';
 import type { FootballDataset } from './types';
 import type { Team } from '../types';
 
+export * from './history';
+
 let defaultDataset: FootballDataset | undefined;
 
 export function getDefaultDataset(): FootballDataset {
