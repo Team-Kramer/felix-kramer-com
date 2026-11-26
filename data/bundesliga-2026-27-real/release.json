@@ -1,0 +1,22 @@
+{
+  "releaseVersion": "1.0.0-bundesliga-2026-27",
+  "schemaVersion": "1.0.0",
+  "datasetVersion": "1.0.0",
+  "datasetId": "bundesliga-2026-27-real",
+  "checksums": {
+    "dataset.json": "d08b3ec97e1f488606a544d4a9b96a78db035df9888c1198b326410f5c50206a",
+    "dataset.pretty.json": "62fc705d730353721aab944fc75b2e34476cbf0c04dcc911bfb05b8548b25522"
+  },
+  "frozenAt": "2026-11-26",
+  "gaps": [
+    "Player snapshots carry identity-level data only (no ratings/attributes) \u2014 detailed attributes arrive with the internal tool.",
+    "No dateOfBirth or preferredFoot yet (not in the Wikipedia squad tables).",
+    "No heatmaps, tracking, chemistry, or tactical profiles yet.",
+    "midfield rating omitted (no midfield-specific metric in source)."
+  ],
+  "sourceDecisions": [
+    "openfootball public domain",
+    "Wikipedia CC BY-SA 4.0",
+    "football-data.co.uk flagged"
+  ]
+}
