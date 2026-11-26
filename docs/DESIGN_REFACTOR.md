@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-24
 **Owner:** AI agent (shockwavemk)
-**Overall status:** In progress (Phases 1–6 complete, Phase 7 in progress)
+**Overall status:** Complete
 
 ## Objective
 
@@ -52,7 +52,7 @@ No structural or route changes. The dark "Green Deck" brand palette is kept.
 | 4. Typography pass | Complete | — | `text-wrap: balance` on display/headlines; optical sizing N/A (DM Sans static, no opsz axis) |
 | 5. Layout & mobile nav | Complete | Phase 1 | Slide-down mobile menu (Escape + breakpoint close), tilt spring-smoothed, pulse-cta kept (reduced-motion covered) |
 | 6. Validation | Complete | Phases 1–5 | check 0 errors, 276/276 tests, build green, dev-server markup verified |
-| 7. PR + Pages verify | In progress | Phase 6 | Commit + PR + merge + Pages deploy |
+| 7. PR + Pages verify | Complete | Phase 6 | PR #6 squash-merged to main (`cc00cba`); Pages deploy run 45845782168 success; felix-kramer.com serving new markup |
 
 ## Work items
 
@@ -105,10 +105,12 @@ No structural or route changes. The dark "Green Deck" brand palette is kept.
 **Done when:** all three commands pass; visual notes recorded.
 
 ### Phase 7 — PR + Pages verify
-- [ ] Commit per phase (or squashed feature commit)
-- [ ] Open PR, merge, verify GitHub Pages deploy
+- [x] Squashed feature commit (`88c4323` on `feature/design-refactor`)
+- [x] PR #6 opened, squash-merged to main (`cc00cba`), branch deleted
+- [x] Pages deploy (Actions `pages.yml`) run 45845782168 — success in 59s
+- [x] felix-kramer.com verified live: `header-edge`, `aria-label="Menü"`, `Hauptnavigation` present
 
-**Done when:** main updated, felix-kramer.com serving the refactor.
+**Done when:** main updated, felix-kramer.com serving the refactor. ✅
 
 ## Risks and open decisions
 
@@ -124,4 +126,4 @@ No structural or route changes. The dark "Green Deck" brand palette is kept.
 - [x] `pnpm run check` passes (0 errors)
 - [x] `pnpm test` — 276 tests green
 - [x] `pnpm run build` succeeds
-- [ ] All success criteria met and recorded above (review table pending)
+- [x] All success criteria met and recorded above
