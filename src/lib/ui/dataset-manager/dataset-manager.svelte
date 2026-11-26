@@ -55,6 +55,7 @@
 			<label class="flex items-center gap-2 text-caption text-ink-tertiary">
 				<select bind:value={exportProfile} aria-label="Exportprofil" class="rounded border border-line bg-surface px-2 py-1 text-sm text-ink">
 					<option value="minimal">Minimal</option>
+					<option value="simulation-compact">Simulation compact</option>
 					<option value="simulation">Simulation</option>
 					<option value="detailed">Detailed</option>
 					<option value="historical">Historical</option>

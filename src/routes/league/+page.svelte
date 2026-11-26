@@ -12,6 +12,7 @@
 	import { useI18n } from '$lib/i18n';
 	import { getDefaultDataset } from '$lib/engine/dataset';
 	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createTournament,
@@ -27,7 +28,7 @@
 
 	const i18n = useI18n();
 
-	const dataset = $derived(datasetStore.dataset ?? getDefaultDataset());
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'league'));
 	const leaguePresets = ['bundesliga', 'premier-league', 'la-liga', 'serie-a', 'ligue-1'].map((id) => ({ id, name: `Fictional ${id}` }));
 	const allClubs = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
 	const teamsForPreset = (id: string) => routeTeamsForCompetition(dataset, `competition-fictional-${id}`, 18);

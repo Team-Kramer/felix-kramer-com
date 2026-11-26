@@ -13,6 +13,7 @@
 	import { toEngineTeams } from '$lib/engine/dataset/adapter';
 	import { getDefaultDataset } from '$lib/engine/dataset';
 	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { expectedGoals } from '$lib/engine/elo';
 	import { matchProbabilities, simulateMatch } from '$lib/engine/poisson';
 	import { rngFromString } from '$lib/engine/prng';
@@ -20,9 +21,8 @@
 
 	const i18n = useI18n();
 
-	const allTeams = $derived(
-		toEngineTeams(datasetStore.dataset ?? getDefaultDataset(), { asOf: '2026-11-26' })
-	);
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'match'));
+	const allTeams = $derived(toEngineTeams(dataset, { asOf: '2026-11-26' }));
 	const teamById = $derived(new Map(allTeams.map((t) => [t.id, t])));
 	const teamOptions = $derived(allTeams.map((t) => ({ value: t.id, label: t.name })));
 

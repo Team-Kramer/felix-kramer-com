@@ -10,6 +10,7 @@
 	import { useI18n } from '$lib/i18n';
 	import { getDefaultDataset } from '$lib/engine/dataset';
 	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createSingleBracket,
@@ -25,7 +26,7 @@
 	import type { BracketMatch, Team } from '$lib/engine/types';
 
 	const i18n = useI18n();
-	const dataset = $derived(datasetStore.dataset ?? getDefaultDataset());
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'bracket'));
 	const allTeams = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
 	const bracketTeams = $derived(routeTeamsForCompetition(dataset, 'competition-fictional-bracket', 64));
 	const teamById = $derived(new Map(allTeams.map((t) => [t.id, t])));

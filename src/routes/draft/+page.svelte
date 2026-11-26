@@ -11,6 +11,7 @@
 	import { useI18n } from '$lib/i18n';
 	import { getDefaultDataset } from '$lib/engine/dataset';
 	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { routeTeams } from '$lib/engine/dataset/adapter';
 	import { toDraftPlayers } from '$lib/engine/dataset/draft-adapter';
 	import {
@@ -29,7 +30,7 @@
 	import { rngFromString } from '$lib/engine/prng';
 
 	const i18n = useI18n();
-	const dataset = $derived(datasetStore.dataset ?? getDefaultDataset());
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'draft'));
 	const players = $derived(toDraftPlayers(dataset));
 
 	let formationId = $state('4-3-3');

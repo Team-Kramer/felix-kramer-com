@@ -1,7 +1,7 @@
 import { validateDataset } from './schema';
 import type { FootballDataset } from './types';
 
-export type DatasetExportProfile = 'minimal' | 'simulation' | 'detailed' | 'historical' | 'internal-complete';
+export type DatasetExportProfile = 'minimal' | 'simulation-compact' | 'simulation' | 'detailed' | 'historical' | 'internal-complete';
 
 const emptyCollections = (): Partial<FootballDataset> => ({
 	competitions: [], seasons: [], teamParticipations: [], players: [], memberships: [],
@@ -9,8 +9,8 @@ const emptyCollections = (): Partial<FootballDataset> => ({
 	matchAppearances: [], events: [], heatmaps: [], tracking: [], chemistry: [], provenance: [],
 });
 
-function projectDataset(dataset: FootballDataset, profile: DatasetExportProfile): FootballDataset {
-	const source = structuredClone(dataset);
+export function projectDataset(dataset: FootballDataset, profile: DatasetExportProfile): FootballDataset {
+	const source = structuredClone(JSON.parse(JSON.stringify(dataset)) as FootballDataset);
 	if (profile === 'internal-complete') return source;
 
 	const base = { ...source, ...emptyCollections() } as FootballDataset;
@@ -40,15 +40,15 @@ function projectDataset(dataset: FootballDataset, profile: DatasetExportProfile)
 	base.players = source.players.map((player) => ({ ...player }));
 	base.memberships = source.memberships.map((item) => ({ ...item }));
 	base.teamSnapshots = source.teamSnapshots.map((item) => ({ ...item, sourceRefs: undefined }));
-	base.playerSnapshots = source.playerSnapshots.map((item) => ({
+	base.playerSnapshots = profile === 'simulation-compact' ? [] : source.playerSnapshots.map((item) => ({
 		...item,
 		weaknesses: profile === 'simulation' ? undefined : item.weaknesses,
 		traits: profile === 'simulation' ? undefined : item.traits,
 		sourceRefs: undefined,
 	}));
-	base.tacticalProfiles = source.tacticalProfiles.map((item) => ({ ...item }));
+	base.tacticalProfiles = profile === 'simulation-compact' ? [] : source.tacticalProfiles.map((item) => ({ ...item }));
 
-	if (profile === 'simulation' || profile === 'detailed') {
+	if (profile === 'simulation-compact' || profile === 'simulation' || profile === 'detailed') {
 		base.chemistry = profile === 'detailed' ? source.chemistry.map((item) => ({ ...item, sourceRefs: undefined })) : [];
 		base.heatmaps = profile === 'detailed' ? source.heatmaps.map((item) => ({ ...item })) : [];
 		base.tracking = profile === 'detailed' ? source.tracking.map((item) => ({ ...item })) : [];

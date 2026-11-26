@@ -14,6 +14,7 @@
 	import { useI18n } from '$lib/i18n';
 	import { getDefaultDataset } from '$lib/engine/dataset';
 	import { datasetStore } from '$lib/engine/dataset/store.svelte';
+	import { projectForGameMode } from '$lib/engine/dataset/profiles';
 	import { routeTeams, routeTeamsForCompetition } from '$lib/engine/dataset/adapter';
 	import {
 		createTournament,
@@ -29,7 +30,7 @@
 	import type { Team } from '$lib/engine/types';
 
 	const i18n = useI18n();
-	const dataset = $derived(datasetStore.dataset ?? getDefaultDataset());
+	const dataset = $derived(projectForGameMode(datasetStore.dataset ?? getDefaultDataset(), 'tournament'));
 	const allTeams = $derived(routeTeams(dataset).map((team) => ({ id: team.id, name: team.name, elo: dataset.teamSnapshots.find((snapshot) => snapshot.teamId === team.id)?.rating.elo ?? 1500, color: team.color })));
 	const competitionForPreset: Record<string, string> = { wc2026: 'competition-fictional-wc2026', euro: 'competition-fictional-euro', ucl: 'competition-fictional-ucl', facup: 'competition-fictional-bracket', swiss: 'competition-fictional-bracket' };
 	const teamsForPreset = (id: string) => routeTeamsForCompetition(dataset, competitionForPreset[id], presets.find((preset) => preset.id === id)?.teamCount ?? 16);
