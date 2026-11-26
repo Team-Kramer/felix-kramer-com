@@ -1,0 +1,927 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://felix-kramer.com/schemas/football-dataset-v1.json",
+  "title": "Felix Kramer Football Dataset",
+  "type": "object",
+  "required": [
+    "$schema",
+    "dataset",
+    "competitions",
+    "seasons",
+    "teams",
+    "teamParticipations",
+    "players",
+    "memberships",
+    "teamSnapshots",
+    "playerSnapshots",
+    "tacticalProfiles",
+    "matches",
+    "matchAppearances",
+    "events",
+    "heatmaps",
+    "tracking",
+    "chemistry",
+    "provenance"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://felix-kramer.com/schemas/football-dataset-v1.json"
+    },
+    "dataset": {
+      "$ref": "#/$defs/datasetMeta"
+    },
+    "competitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/competition"
+      }
+    },
+    "seasons": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/season"
+      }
+    },
+    "teams": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/team"
+      }
+    },
+    "teamParticipations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/teamParticipation"
+      }
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/player"
+      }
+    },
+    "memberships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/membership"
+      }
+    },
+    "teamSnapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/teamSnapshot"
+      }
+    },
+    "playerSnapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/playerSnapshot"
+      }
+    },
+    "tacticalProfiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tacticalProfile"
+      }
+    },
+    "matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/match"
+      }
+    },
+    "matchAppearances": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/matchAppearance"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "heatmaps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/heatmap"
+      }
+    },
+    "tracking": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trackingReference"
+      }
+    },
+    "chemistry": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/chemistry"
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provenance"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "interval": {
+      "type": "object",
+      "required": [
+        "validFrom",
+        "validTo"
+      ],
+      "properties": {
+        "validFrom": {
+          "$ref": "#/$defs/date"
+        },
+        "validTo": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "datasetMeta": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "schemaVersion",
+        "datasetVersion",
+        "createdAt",
+        "updatedAt",
+        "sourceType",
+        "defaultTimeZone",
+        "defaultCoordinateSystem",
+        "units"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schemaVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "datasetVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "createdAt": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "sourceType": {
+          "enum": [
+            "synthetic-fixture",
+            "user-provided",
+            "internal-tool",
+            "imported"
+          ]
+        },
+        "defaultTimeZone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "defaultCoordinateSystem": {
+          "const": "normalized-pitch"
+        },
+        "units": {
+          "type": "object",
+          "required": [
+            "distance",
+            "speed",
+            "duration"
+          ],
+          "properties": {
+            "distance": {
+              "const": "km"
+            },
+            "speed": {
+              "const": "kmh"
+            },
+            "duration": {
+              "const": "minutes"
+            }
+          }
+        }
+      }
+    },
+    "competition": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "countryCode",
+        "name",
+        "shortName",
+        "level",
+        "gender",
+        "seasonIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "league",
+            "cup",
+            "tournament"
+          ]
+        },
+        "countryCode": {
+          "type": "string",
+          "minLength": 2
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shortName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "type": "number",
+          "minimum": 1
+        },
+        "gender": {
+          "enum": [
+            "male",
+            "female",
+            "mixed"
+          ]
+        },
+        "seasonIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "season": {
+      "type": "object",
+      "required": [
+        "id",
+        "competitionId",
+        "name",
+        "startDate",
+        "endDate"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "competitionId": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startDate": {
+          "$ref": "#/$defs/date"
+        },
+        "endDate": {
+          "$ref": "#/$defs/date"
+        }
+      }
+    },
+    "team": {
+      "type": "object",
+      "required": [
+        "id",
+        "canonicalName",
+        "shortName",
+        "countryCode",
+        "aliases"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "canonicalName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shortName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "countryCode": {
+          "type": "string",
+          "minLength": 2
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "teamParticipation": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "competitionId",
+            "seasonId",
+            "teamId",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "competitionId": {
+              "$ref": "#/$defs/id"
+            },
+            "seasonId": {
+              "$ref": "#/$defs/id"
+            },
+            "teamId": {
+              "$ref": "#/$defs/id"
+            },
+            "status": {
+              "enum": [
+                "active",
+                "completed",
+                "withdrawn"
+              ]
+            },
+            "position": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "points": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "player": {
+      "type": "object",
+      "required": [
+        "id",
+        "canonicalName",
+        "nationalityCodes",
+        "positions",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "canonicalName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dateOfBirth": {
+          "$ref": "#/$defs/date"
+        },
+        "nationalityCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "positions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preferredFoot": {
+          "enum": [
+            "left",
+            "right",
+            "both"
+          ]
+        },
+        "status": {
+          "enum": [
+            "active",
+            "retired",
+            "unknown",
+            "archived"
+          ]
+        }
+      }
+    },
+    "membership": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "playerId",
+            "teamId",
+            "role"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "playerId": {
+              "$ref": "#/$defs/id"
+            },
+            "teamId": {
+              "$ref": "#/$defs/id"
+            },
+            "role": {
+              "enum": [
+                "player",
+                "reserve",
+                "national-team"
+              ]
+            },
+            "contractType": {
+              "enum": [
+                "permanent",
+                "loan",
+                "free-agent",
+                "unknown"
+              ]
+            },
+            "squadNumber": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    },
+    "teamSnapshot": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "teamId",
+            "rating"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "teamId": {
+              "$ref": "#/$defs/id"
+            },
+            "rating": {
+              "type": "object",
+              "required": [
+                "elo"
+              ],
+              "properties": {
+                "elo": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "playerSnapshot": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "playerId",
+            "scale",
+            "attributes",
+            "assessmentType"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "playerId": {
+              "$ref": "#/$defs/id"
+            },
+            "scale": {
+              "type": "object",
+              "required": [
+                "min",
+                "max"
+              ],
+              "properties": {
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              }
+            },
+            "attributes": {
+              "type": "object"
+            },
+            "assessmentType": {
+              "enum": [
+                "observed",
+                "scouted",
+                "derived",
+                "estimated",
+                "imported"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "tacticalProfile": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "playerId",
+            "role",
+            "position",
+            "roleFit"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "playerId": {
+              "$ref": "#/$defs/id"
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "position": {
+              "type": "string",
+              "minLength": 1
+            },
+            "roleFit": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      ]
+    },
+    "match": {
+      "type": "object",
+      "required": [
+        "id",
+        "competitionId",
+        "seasonId",
+        "dateTime",
+        "homeTeamId",
+        "awayTeamId",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "competitionId": {
+          "$ref": "#/$defs/id"
+        },
+        "seasonId": {
+          "$ref": "#/$defs/id"
+        },
+        "dateTime": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "homeTeamId": {
+          "$ref": "#/$defs/id"
+        },
+        "awayTeamId": {
+          "$ref": "#/$defs/id"
+        },
+        "status": {
+          "enum": [
+            "scheduled",
+            "live",
+            "finished",
+            "postponed",
+            "cancelled"
+          ]
+        }
+      }
+    },
+    "matchAppearance": {
+      "type": "object",
+      "required": [
+        "id",
+        "matchId",
+        "playerId",
+        "teamId",
+        "started",
+        "minutes"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "matchId": {
+          "$ref": "#/$defs/id"
+        },
+        "playerId": {
+          "$ref": "#/$defs/id"
+        },
+        "teamId": {
+          "$ref": "#/$defs/id"
+        },
+        "started": {
+          "type": "boolean"
+        },
+        "minutes": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 130
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "id",
+        "matchId",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "matchId": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minute": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 130
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "heatmap": {
+      "type": "object",
+      "required": [
+        "id",
+        "subjectType",
+        "subjectId",
+        "scope",
+        "coordinateSystem",
+        "resolution",
+        "cells"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "subjectType": {
+          "enum": [
+            "player",
+            "team"
+          ]
+        },
+        "subjectId": {
+          "$ref": "#/$defs/id"
+        },
+        "scope": {
+          "enum": [
+            "match",
+            "season",
+            "rolling-window",
+            "career"
+          ]
+        },
+        "coordinateSystem": {
+          "const": "normalized-pitch"
+        },
+        "resolution": {
+          "type": "object",
+          "required": [
+            "width",
+            "height"
+          ],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "trackingReference": {
+      "type": "object",
+      "required": [
+        "id",
+        "subjectType",
+        "subjectId",
+        "coordinateSystem",
+        "samplingHz",
+        "pointCount",
+        "storage"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "subjectType": {
+          "enum": [
+            "player",
+            "team"
+          ]
+        },
+        "subjectId": {
+          "$ref": "#/$defs/id"
+        },
+        "coordinateSystem": {
+          "const": "normalized-pitch"
+        },
+        "samplingHz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pointCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "storage": {
+          "type": "object",
+          "required": [
+            "format",
+            "path",
+            "compression"
+          ],
+          "properties": {
+            "format": {
+              "const": "jsonl"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "compression": {
+              "enum": [
+                "gzip",
+                "brotli",
+                "none"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "chemistry": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/interval"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "teamId",
+            "overall"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "teamId": {
+              "$ref": "#/$defs/id"
+            },
+            "overall": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "provider",
+        "name",
+        "license",
+        "method"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
