@@ -124,7 +124,7 @@ checkboxes into this document.
 | M1. Contracts introduced | Complete | M0 | Contracts, JSON Schema, fixtures, validation, and engine adapter added (commit 656cc0b) |
 | M2. Fictional dataset path | Complete | M1 | All five simulator routes consume the dataset store with fictional fallback (commit 4842900) |
 | M3. Local import/export | Complete | M2 | JSON round-trip, localStorage, store, manager UI, export profiles, and IndexedDB fallback (commits 23ab962, 53ddc47) |
-| M3.5. Browser-only runtime | In progress | M3 | Storage and profile loading work; Web Workers for simulations remain |
+| M3.5. Browser-only runtime | In progress | M3 | Worker, PRNG, storage fallback, import-size and storage-availability checks committed (efa0cc2); mobile measurement, reduced profile, and offline smoke test remain |
 | M4. Historical model integrated | Complete | M3.5 | Temporal adapters with 27 tests; minimal datasets remain functional (commit efbd3ff) |
 | M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
@@ -247,26 +247,26 @@ The public game is a static client application. It must not depend on an
 application server for dataset usage or simulation. Node.js-only APIs, secrets,
 and server-side data access are excluded from the runtime engine.
 
-- [ ] Keep the simulation engine free of Node.js, filesystem, and server-only APIs.
-- [ ] Define a browser-compatible deterministic random source and seed handling.
-- [ ] Move Monte-Carlo and long-running league simulations into Web Workers.
-- [ ] Define typed messages for worker requests, progress updates, results, errors,
+- [x] Keep the simulation engine free of Node.js, filesystem, and server-only APIs.
+- [x] Define a browser-compatible deterministic random source and seed handling.
+- [x] Move Monte-Carlo and long-running league simulations into Web Workers.
+- [x] Define typed messages for worker requests, progress updates, results, errors,
   cancellation, and retry.
-- [ ] Allow the UI to cancel a running simulation without corrupting dataset state.
-- [ ] Add progress reporting for long-running simulations and large imports.
-- [ ] Store small settings and metadata in `localStorage` only.
-- [ ] Store large datasets and imported profile payloads in IndexedDB.
-- [ ] Detect unavailable storage and present an explicit fallback/error state.
+- [x] Allow the UI to cancel a running simulation without corrupting dataset state.
+- [x] Add progress reporting for long-running simulations and large imports.
+- [x] Store small settings and metadata in `localStorage` only.
+- [x] Store large datasets and imported profile payloads in IndexedDB.
+- [x] Detect unavailable storage and present an explicit fallback/error state.
 - [ ] Load only the profile needed by the active game mode where possible.
-- [ ] Keep raw tracking streams out of the initial page bundle.
-- [ ] Add import-size and available-storage checks before committing a dataset.
+- [x] Keep raw tracking streams out of the initial page bundle.
+- [x] Add import-size and available-storage checks before committing a dataset.
 - [ ] Measure parse time, memory usage, and simulation time on desktop and mobile browsers.
 - [ ] Add a reduced `simulation` profile for lower-memory devices.
 - [ ] Verify that the application works without a network after its static assets are cached.
 - [ ] Decide whether to add a service worker/PWA layer after the core offline behavior is stable.
-- [ ] Verify that no server endpoint or API key is required for the public game.
+- [x] Verify that no server endpoint or API key is required for the public game.
 - [ ] Run route smoke tests while a worker simulation is active.
-- [ ] Commit runtime, worker, and storage changes separately from dataset generation.
+- [x] Commit runtime, worker, and storage changes separately from dataset generation.
 
 **Gate:** A user can load the static site, import a valid dataset, run a
 simulation in a worker, reload it from browser storage, and continue without an
@@ -424,15 +424,15 @@ from the detailed plans here.
 
 | Overall area | Detailed plan section | Status | Evidence / next action |
 |---|---|---|---|
-| Domain model and IDs | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 1–2 | Not started | Define contract before migration |
-| Local import/export | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 2, 5–7 | Not started | Implement after fictional adapter |
-| Internal creation tool | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phase 3 | Not started | Decide route vs separate tool |
-| Historical model | Both detailed plans | Not started | Integrate snapshots and memberships |
-| Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Not started | Build synthetic fixture first |
-| Bundesliga dataset | This plan, Phase 7 | Not started | Add reviewed batches |
+| Domain model and IDs | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 1–2 | Complete | Contracts, stable IDs, memberships, snapshots (M1, commit 656cc0b) |
+| Local import/export | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 2, 5–7 | Complete | Import, export profiles, localStorage/IndexedDB, manager UI (M3, commits 23ab962, 53ddc47) |
+| Internal creation tool | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phase 3 | Complete | /editor route with 9 tabs, CRUD, live validation, seed (M5/M6, commits 821e9d2, def0bb4, 4dcb9cc) |
+| Historical model | Both detailed plans | Complete | Temporal adapters, 27 history tests (M4, commit efbd3ff) |
+| Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Complete | Attributes, roles, chemistry, matches, provenance in seed round-trip (M6, commit 4dcb9cc) |
+| Bundesliga dataset | This plan, Phase 7 | In progress | Synthetic seed committed (def0bb4); real-data batches pending licensing review |
 | Compression and size | This plan, Phase 8 | Not started | Measure before choosing format |
-| Browser-only runtime | This plan, Phase 3.5 | Not started | Validate workers, IndexedDB, profiles, and offline behavior |
-| Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Not started | Preserve route behavior |
+| Browser-only runtime | This plan, Phase 3.5 | In progress | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
+| Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Complete | All five routes consume the dataset store (M2, commit 4842900) |
 | GitHub Pages release | This plan, Phase 9 | Not started | Validate clean checkout deployment |
 
 ## Risks and decisions requiring explicit evidence
