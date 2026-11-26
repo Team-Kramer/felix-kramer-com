@@ -48,6 +48,8 @@ function measure(name, filePath, metadata = {}) {
 		void parsed.value;
 		collectGarbage();
 	}
+	const prettyPath = filePath.replace(/dataset\.json$/, 'dataset.pretty.json');
+	const pretty = existsSync(prettyPath) ? readFileSync(prettyPath, 'utf8') : JSON.stringify(JSON.parse(compact), null, 2);
 	const gzip = gzipSync(compact, { level: 9 });
 	const brotli = brotliCompressSync(compact);
 	const parsed = JSON.parse(compact);
@@ -63,12 +65,13 @@ function measure(name, filePath, metadata = {}) {
 		records,
 		sizes: {
 			compactJson: mib(jsonBytes(compact)),
-			prettyJson: null,
+			prettyJson: mib(jsonBytes(pretty)),
 			gzip: mib(gzip.byteLength),
 			brotli: mib(brotli.byteLength),
 		},
 		bytes: {
 			compactJson: jsonBytes(compact),
+			prettyJson: jsonBytes(pretty),
 			gzip: gzip.byteLength,
 			brotli: brotli.byteLength,
 		},
