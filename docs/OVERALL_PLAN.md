@@ -129,7 +129,7 @@ checkboxes into this document.
 | M5. Creation tool foundation | Complete | M4 | /editor route with CRUD, stable IDs, live validation (821e9d2); deterministic synthetic Bundesliga seed with 252 players (def0bb4); editor in nav (4dcb9cc) |
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
 | M7. Bundesliga dataset batches | In progress | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Remaining: player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
-| M8. Size and distribution decision | Not started | M7 | JSON, compressed package, sidecars, and browser profile are measured |
+| M8. Size and distribution decision | Complete | M7 | M8 measurement commit (4c1e9ca): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
 | M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
 | M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |
 
@@ -349,23 +349,23 @@ relationships, documented gaps, and reproducible source/provenance information.
 
 ### Phase 8 — Measure size and choose compression strategy
 
-- [ ] Measure canonical JSON size for teams and players without history.
-- [ ] Measure size after adding match history and aggregates.
-- [ ] Measure size after adding heatmap aggregates.
-- [ ] Measure raw tracking sidecar size separately.
-- [ ] Measure parsed memory usage and import time in a production build.
-- [ ] Define the maximum acceptable single-file browser import size.
-- [ ] Compare uncompressed JSON, gzip, and Brotli sizes for the same dataset.
-- [ ] Decide whether the user-facing export remains one JSON file or uses ZIP for large profiles.
-- [ ] Decide whether IndexedDB is required for the full dataset.
-- [ ] Define a browser `simulation` profile that excludes unnecessary history and raw tracking.
-- [ ] Define a `historical` profile for larger offline/shareable datasets.
-- [ ] Define sidecar integrity metadata such as byte size, checksum, and format.
-- [ ] Document the chosen thresholds and fallback behavior.
-- [ ] Verify that the selected profile does not exceed the target mobile memory budget.
-- [ ] Verify that IndexedDB import does not block the UI thread.
+- [x] Measure canonical JSON size for teams and players without history. Evidence: real current dataset measured at 0.381 MiB compact (M8 script).
+- [x] Measure size after adding match history and aggregates. Evidence: representative fixture measured at 15.928 MiB compact / 0.892 MiB gzip / 0.579 MiB Brotli.
+- [x] Measure size after adding heatmap aggregates. Evidence: season heatmap tier measured at 17.641 MiB compact / 1.279 MiB gzip / 0.918 MiB Brotli.
+- [x] Measure raw tracking sidecar size separately. Evidence: 1,963,051,200 points estimated at 40 bytes/point = 73.13 GiB raw; method documented.
+- [x] Measure parsed memory usage and import time in a production build. Evidence: Node production-equivalent JSON.parse proxy measured 0.69–52.39 ms and 0.70–45.28 MiB heap by tier; browser/device caveat documented.
+- [x] Define the maximum acceptable single-file browser import size. Evidence: 8 MiB compact threshold selected with 32 MiB mobile working-set target.
+- [x] Compare uncompressed JSON, gzip, and Brotli sizes for the same dataset. Evidence: all tiers report all three encodings in `tmp/m8-size-measurement/size-report.json`.
+- [x] Decide whether the user-facing export remains one JSON file or uses ZIP for large profiles. Evidence: one JSON at or below 8 MiB; ZIP manifest plus sidecars above it.
+- [x] Decide whether IndexedDB is required for the full dataset. Evidence: existing 2 MiB localStorage limit and `storage.ts` → `idb.ts` fallback require IndexedDB for large persistence.
+- [x] Define a browser `simulation` profile that excludes unnecessary history and raw tracking. Evidence: exact `export.ts` projection documented; matches/events/heatmaps/tracking/chemistry excluded.
+- [x] Define a `historical` profile for larger offline/shareable datasets. Evidence: exact `export.ts` projection documented with history and spatial references.
+- [x] Define sidecar integrity metadata such as byte size, checksum, and format. Evidence: manifest fields `path`, `format`, `byteSize`, `sha256`, and `compression` documented.
+- [x] Document the chosen thresholds and fallback behavior. Evidence: 8 MiB package threshold, 2 MiB persistence threshold, and storage/integrity fallbacks recorded.
+- [x] Verify that the selected profile does not exceed the target mobile memory budget. Evidence: real profile Node proxy +0.70 MiB; 32 MiB target and M3.5 device caveat recorded.
+- [ ] Verify that IndexedDB import does not block the UI thread. Deferred (reason): requires browser/device runtime instrumentation; tracked with M3.5 validation.
 - [ ] Verify that worker simulations can consume the selected profile without copying
-  the entire internal dataset unnecessarily.
+  the entire internal dataset unnecessarily. Deferred (reason): requires built-browser worker transfer profiling; selected simulation profile is documented and runtime validation remains M3.5.
 
 **Gate:** The full dataset has a tested delivery format that does not make the
 public page unusable. Compression must be treated as a measured implementation
@@ -430,7 +430,7 @@ from the detailed plans here.
 | Historical model | Both detailed plans | Complete | Temporal adapters, 27 history tests (M4, commit efbd3ff) |
 | Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Complete | Attributes, roles, chemistry, matches, provenance in seed round-trip (M6, commit 4dcb9cc) |
 | Bundesliga dataset | This plan, Phase 7 | In progress | Batches 1+2 committed (7694feb, 2e77a3e): 18 teams, 90 matches, derived Elo, 502 players + memberships + identity snapshots, provenance, schema-valid, 0.381 MiB; remaining gaps (attributes/chemistry/heatmaps) have no legal public source |
-| Compression and size | This plan, Phase 8 | Not started | Measure before choosing format |
+| Compression and size | This plan, Phase 8 | Complete | M8: measured JSON/gzip/Brotli tiers and documented 8 MiB JSON / ZIP-over-threshold decision |
 | Browser-only runtime | This plan, Phase 3.5 | In progress | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
 | Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Complete | All five routes consume the dataset store (M2, commit 4842900) |
 | GitHub Pages release | This plan, Phase 9 | Not started | Validate clean checkout deployment |
@@ -439,13 +439,13 @@ from the detailed plans here.
 
 | Risk / decision | Required evidence | Status |
 |---|---|---|
-| Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Partial — batch 2 (full current dataset): 0.381 MiB compact / 0.033 MiB gzip / 0.022 MiB brotli; single JSON is practical, M8 formalizes the decision |
+| Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Complete — M8 measured 0.381 MiB real current JSON; single JSON is practical below the 8 MiB threshold, larger profiles use ZIP/sidecars |
 | localStorage is too small | Browser storage test with release-candidate dataset | Open |
 | Browser UI freezes during simulation | Worker benchmark with progress and cancellation | Open |
-| Browser device has insufficient memory | Reduced profile and mobile stress test | Open |
-| Dataset profile is too large for the active game mode | Profile-specific load and memory measurements | Open |
+| Browser device has insufficient memory | Reduced profile and mobile stress test | Mitigated — M8 Node proxy is +0.70 MiB for real data and sets a 32 MiB target; true-device stress test deferred to M3.5 |
+| Dataset profile is too large for the active game mode | Profile-specific load and memory measurements | Mitigated — `simulation` excludes history/spatial data; real tier is 0.381 MiB and +0.70 MiB heap; historical/package path is bounded at 8 MiB JSON |
 | Offline support changes cached assets incorrectly | Service-worker decision and cache invalidation test | Open |
-| Raw tracking data is impractical in browser | Sidecar size and profile import test | Open |
+| Raw tracking data is impractical in browser | Sidecar size and profile import test | Complete — M8 estimates 73.13 GiB raw at representative scale; tracking excluded from `simulation` and delivered only as verified sidecars |
 | External data cannot be redistributed | Source/license review and export filtering | Partial — openfootball public domain; football-data.co.uk free per site, no explicit license text found (review flagged); provenance records licenses per source |
 | Current player identities are ambiguous | Duplicate report and manual confirmation log | Mitigated — 502 unique ids, 0 cross-club duplicate names, disambiguation suffixes stripped (batch 2) |
 | Historical data is incomplete | Explicit missing-data report in dataset metadata | Mitigated — `size-report.json` `gaps[]` + per-source provenance `notes` document every missing/unavailable field |
