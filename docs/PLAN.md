@@ -2,7 +2,7 @@
 
 **Updated:** 2026-11-26  
 **Owner:** Felix Kramer  
-**Overall status:** Implemented through M9; final hosted profile verification pending
+**Overall status:** Complete (M0–M10; all phases implemented, hosted verification done — see `docs/OVERALL_PLAN.md`)
 
 ## Objective
 
@@ -651,15 +651,15 @@ Before export, the tool must reject or clearly flag:
 
 | Phase | Status | Depends on | Outcome / notes |
 |---|---|---|---|
-| 1. Domain model and ID policy | Not started | — | Stable entities, references, temporal rules, and naming policy |
-| 2. Schema and TypeScript contracts | Not started | Phase 1 | Validated canonical JSON format |
-| 3. Internal catalog and editor foundation | Not started | Phase 2 | Manage competitions, seasons, teams, and players |
-| 4. Memberships and historical snapshots | Not started | Phase 3 | Model transfers, roles, and time-dependent values |
-| 5. Match, event, and spatial history | Not started | Phase 4 | Store detailed historical and spatial data |
-| 6. Chemistry and derived simulation data | Not started | Phase 5 | Represent team context and derived values |
-| 7. Import, validation, and export pipeline | Not started | Phase 2, Phase 6 | Produce safe export profiles and round-trip imports |
-| 8. Simulator integration | Not started | Phase 7 | Consume datasets through the dataset store |
-| 9. Test fixtures, migration, and documentation | Not started | Phase 7, Phase 8 | Verified rollout and maintainable examples |
+| 1. Domain model and ID policy | Complete | — | Stable entities, references, temporal rules, and naming policy (M1) |
+| 2. Schema and TypeScript contracts | Complete | Phase 1 | Validated canonical JSON format (M1, commit 656cc0b) |
+| 3. Internal catalog and editor foundation | Complete | Phase 2 | /editor route with CRUD, stable IDs, live validation (M5, 821e9d2) |
+| 4. Memberships and historical snapshots | Complete | Phase 3 | n:m memberships, identity snapshots, temporal adapters (M4/M5, efbd3ff, def0bb4) |
+| 5. Match, event, and spatial history | Complete | Phase 4 | 90 matches, spatial schema + validation; 90-match history tier measured (M7, 7694feb) |
+| 6. Chemistry and derived simulation data | Complete | Phase 5 | Chemistry schema, provenance, derived Elo; no public source for real chemistry (documented gap) |
+| 7. Import, validation, and export pipeline | Complete | Phase 2, Phase 6 | Export profiles incl. `simulation-compact`, import limits, round-trip tests (M3, M3.5) |
+| 8. Simulator integration | Complete | Phase 7 | All five routes consume the dataset store with mode projections (M2, 4842900) |
+| 9. Test fixtures, migration, and documentation | Complete | Phase 7, Phase 8 | 276 tests, migration verified, docs aligned (M9/M10) |
 
 ## Work items
 

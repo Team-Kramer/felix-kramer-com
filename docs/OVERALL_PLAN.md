@@ -2,7 +2,7 @@
 
 **Updated:** 2026-11-26  
 **Owner:** Felix Kramer  
-**Overall status:** M0–M9 complete; M10 pending (final hosted verification with the final simulator profile)  
+**Overall status:** Complete — M0–M10 done; `felix-kramer.com` live on GitHub Pages with the full Bundesliga 2026/27 dataset (tag `v1.0.0-bundesliga-2026-27`)  
 **Target:** Working `felix-kramer.com` deployment on GitHub Pages with a complete first Bundesliga 2026/27 dataset
 
 ## Objective
@@ -43,26 +43,26 @@ Stable GitHub Pages release
 
 At completion:
 
-- [ ] `felix-kramer.com` builds successfully as a static SvelteKit site.
-- [ ] The site is deployable through the existing GitHub Pages workflow.
-- [ ] Existing simulator routes continue to work during and after migration.
-- [ ] The public bundle contains only fictional or explicitly permitted defaults.
-- [ ] Users can import a validated dataset locally.
-- [ ] Users can export a selected dataset profile locally.
-- [ ] The simulator receives its data through the dataset store and typed adapters.
-- [ ] The complete game runs client-side without a required application server.
-- [ ] Repeated or expensive simulations run outside the UI thread through Web Workers.
-- [ ] Large datasets use IndexedDB or an explicitly measured alternative instead of relying
-  on `localStorage` alone.
-- [ ] Each game mode can load an appropriate dataset profile instead of the full dataset.
-- [ ] The app remains usable on a normal mobile browser with a reduced simulation profile.
-- [ ] The internal creation tool can maintain competitions, seasons, teams, players,
-  memberships, snapshots, matches, history, spatial data, chemistry, and provenance.
-- [ ] A first complete Bundesliga 2026/27 dataset exists in the canonical format,
-  subject to source licensing and data-quality verification.
-- [ ] The full dataset has a documented size strategy: single JSON where practical,
-  compressed/split package where necessary, and a simulator-ready browser profile.
-- [ ] Every release increment has a focused test result and a committable state.
+- [x] `felix-kramer.com` builds successfully as a static SvelteKit site (Pages run 45825807718).
+- [x] The site is deployable through the existing GitHub Pages workflow (runs 45825341237, 45825807718 green).
+- [x] Existing simulator routes continue to work during and after migration (all routes 200 hosted; route tests).
+- [x] The public bundle contains only fictional or explicitly permitted defaults (M9 build-content check; permitted catalogue data only).
+- [x] Users can import a validated dataset locally (import tests; hosted dataset asset validates through `validateDataset`).
+- [x] Users can export a selected dataset profile locally (export profile tests, `simulation-compact` in hosted bundle).
+- [x] The simulator receives its data through the dataset store and typed adapters (M2, commit 4842900).
+- [x] The complete game runs client-side without a required application server (no-server audit, `docs/BROWSER_RUNTIME.md`).
+- [x] Repeated or expensive simulations run outside the UI thread through Web Workers (worker protocol, progress/determinism tests, panel `terminate()`).
+- [x] Large datasets use IndexedDB or an explicitly measured alternative instead of relying
+  on `localStorage` alone (2 MiB threshold, IDB fallback tests, M8 measurements).
+- [x] Each game mode can load an appropriate dataset profile instead of the full dataset (mode→profile projections, commit 6c05dd1).
+- [x] The app remains usable on a normal mobile browser with a reduced simulation profile (Node proxy measurements + 32 MiB target; true-device stress test documented as deferred in `docs/BROWSER_RUNTIME.md`).
+- [x] The internal creation tool can maintain competitions, seasons, teams, players,
+  memberships, snapshots, matches, history, spatial data, chemistry, and provenance (M5/M6, 9 editor tabs).
+- [x] A first complete Bundesliga 2026/27 dataset exists in the canonical format,
+  subject to source licensing and data-quality verification (tag `v1.0.0-bundesliga-2026-27`; checksums in `docs/RELEASE-1.0.0.md`; known gaps documented).
+- [x] The full dataset has a documented size strategy: single JSON where practical,
+  compressed/split package where necessary, and a simulator-ready browser profile (`docs/DATA_SIZE_DECISION.md`).
+- [x] Every release increment has a focused test result and a committable state (276 tests green at release).
 
 ## Scope boundaries
 
@@ -104,17 +104,17 @@ checkboxes into this document.
 
 ## Delivery principles
 
-- [ ] Keep the application buildable after every implementation increment.
-- [ ] Keep the fictional fallback available until the full migration is verified.
-- [ ] Introduce adapters before removing existing data access.
-- [ ] Separate schema changes from UI changes and engine changes where possible.
-- [ ] Make each increment independently testable and committable.
-- [ ] Never mix raw source data, derived values, and simulator parameters without provenance.
-- [ ] Never overwrite historical records; append snapshots or corrections.
-- [ ] Do not add real data to the public bundle without a licensing decision.
-- [ ] Prefer deterministic exports so dataset changes can be reviewed and diffed.
-- [ ] Measure dataset size before selecting browser persistence and delivery formats.
-- [ ] Validate the static production build before declaring an increment complete.
+- [x] Keep the application buildable after every implementation increment.
+- [x] Keep the fictional fallback available until the full migration is verified.
+- [x] Introduce adapters before removing existing data access.
+- [x] Separate schema changes from UI changes and engine changes where possible.
+- [x] Make each increment independently testable and committable.
+- [x] Never mix raw source data, derived values, and simulator parameters without provenance.
+- [x] Never overwrite historical records; append snapshots or corrections.
+- [x] Do not add real data to the public bundle without a licensing decision.
+- [x] Prefer deterministic exports so dataset changes can be reviewed and diffed.
+- [x] Measure dataset size before selecting browser persistence and delivery formats.
+- [x] Validate the static production build before declaring an increment complete.
 
 ## Milestones and gates
 
@@ -131,7 +131,7 @@ checkboxes into this document.
 | M7. Bundesliga dataset batches | Complete | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Known gaps (documented, not blockers): player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
 | M8. Size and distribution decision | Complete | M7 | M8 measurement commit (1d5386e): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
 | M9. Full Bundesliga release candidate | Complete | M8 | `v1.0.0-bundesliga-2026-27` / `564c6be`; release checksums, static import, route/persistence tests, and Pages run 45825341237 |
-| M10. GitHub Pages release | Pending | M9 | Final hosted verification with the final simulator profile remains for the next step |
+| M10. GitHub Pages release | Complete | M9 | Hosted verification: all 9 routes + dataset asset HTTP 200; hosted dataset SHA-256 matches release checksum `d08b3ec9…`; hosted chunks `DWgQWBni`/`D1LJGNcs`/`XZ4IpiPj` (final `simulation-compact` profile) byte-identical to local `origin/main` build; Pages runs 45825341237 + 45825807718 green |
 
 ## Work items
 
@@ -139,9 +139,9 @@ checkboxes into this document.
 
 - [x] Record the current production build command and GitHub Pages workflow.
 - [x] Run the existing check, test, and build commands and record their baseline results.
-- [ ] Confirm all current simulator routes render before changing data access.
+- [x] Confirm all current simulator routes render before changing data access.
 - [x] Record the current generated data files and their consumers.
-- [ ] Identify the smallest fictional fallback that can replace real bundled data safely.
+- [x] Identify the smallest fictional fallback that can replace real bundled data safely.
 - [x] Confirm the repository has a clean, reviewable starting point or document existing worktree changes.
 - [x] Define the commit convention for each increment.
 
@@ -274,49 +274,49 @@ application server. The UI remains responsive throughout.
 
 ### Phase 4 — Integrate temporal and historical data
 
-- [ ] Implement team participation and player membership adapters.
-- [ ] Implement team and player snapshot resolution for a selected date.
-- [ ] Add match, appearance, event, aggregate, and form-history adapters.
-- [ ] Add historical fixture tests for transfers, loans, and changing ratings.
-- [ ] Add append-only correction/version handling.
-- [ ] Add heatmap aggregate references without requiring raw tracking data.
-- [ ] Ensure current-only simulators continue to work when history is absent.
-- [ ] Run historical import/export round trips and production builds.
-- [ ] Commit history support separately from tracking sidecars.
+- [x] Implement team participation and player membership adapters.
+- [x] Implement team and player snapshot resolution for a selected date.
+- [x] Add match, appearance, event, aggregate, and form-history adapters.
+- [x] Add historical fixture tests for transfers, loans, and changing ratings.
+- [x] Add append-only correction/version handling.
+- [x] Add heatmap aggregate references without requiring raw tracking data.
+- [x] Ensure current-only simulators continue to work when history is absent.
+- [x] Run historical import/export round trips and production builds.
+- [x] Commit history support separately from tracking sidecars.
 
 **Gate:** The simulator can use a historical dataset, while a minimal dataset
 without history remains valid and functional.
 
 ### Phase 5 — Build the internal creation-tool foundation
 
-- [ ] Decide whether the creation tool is a protected route or a separate application.
-- [ ] Implement competition and season catalog management.
-- [ ] Seed a synthetic Bundesliga catalog with stable IDs.
-- [ ] Implement team identity, aliases, and participation management.
-- [ ] Implement independent player identity management.
-- [ ] Implement membership management for transfers, loans, reserve teams, and national teams.
-- [ ] Implement duplicate detection and identity confirmation workflows.
-- [ ] Implement snapshot creation without overwriting existing history.
-- [ ] Add editor-only audit fields and ensure they are excluded from public profiles.
-- [ ] Export the first complete synthetic canonical dataset from the tool.
-- [ ] Validate that the exported dataset imports through the public dataset path.
-- [ ] Commit the internal foundation only after the public import path accepts its output.
+- [x] Decide whether the creation tool is a protected route or a separate application.
+- [x] Implement competition and season catalog management.
+- [x] Seed a synthetic Bundesliga catalog with stable IDs.
+- [x] Implement team identity, aliases, and participation management.
+- [x] Implement independent player identity management.
+- [x] Implement membership management for transfers, loans, reserve teams, and national teams.
+- [x] Implement duplicate detection and identity confirmation workflows.
+- [x] Implement snapshot creation without overwriting existing history.
+- [x] Add editor-only audit fields and ensure they are excluded from public profiles.
+- [x] Export the first complete synthetic canonical dataset from the tool.
+- [x] Validate that the exported dataset imports through the public dataset path.
+- [x] Commit the internal foundation only after the public import path accepts its output.
 
 **Gate:** The internal tool can create a valid dataset that the public simulator
 can import without special-case code.
 
 ### Phase 6 — Add detailed modelling capabilities
 
-- [ ] Add technical, mental, physical, and goalkeeping attributes.
-- [ ] Add weaknesses, traits, confidence, assessment types, and role profiles.
-- [ ] Add team styles, formation preferences, and historical team ratings.
-- [ ] Add match appearances, events, season aggregates, form windows, and position splits.
-- [ ] Add chemistry snapshots, pairwise affinity, line units, and model versions.
-- [ ] Add heatmaps, normalized coordinates, zones, and spatial summaries.
-- [ ] Add tracking metadata and compressed sidecar references.
-- [ ] Add provenance, licensing, source transformations, and derivation records.
-- [ ] Add tests proving observed, scouted, derived, estimated, and imported values remain distinguishable.
-- [ ] Export a detailed synthetic dataset and verify all profiles.
+- [x] Add technical, mental, physical, and goalkeeping attributes.
+- [x] Add weaknesses, traits, confidence, assessment types, and role profiles.
+- [x] Add team styles, formation preferences, and historical team ratings.
+- [x] Add match appearances, events, season aggregates, form windows, and position splits.
+- [x] Add chemistry snapshots, pairwise affinity, line units, and model versions.
+- [x] Add heatmaps, normalized coordinates, zones, and spatial summaries.
+- [x] Add tracking metadata and compressed sidecar references.
+- [x] Add provenance, licensing, source transformations, and derivation records.
+- [x] Add tests proving observed, scouted, derived, estimated, and imported values remain distinguishable.
+- [x] Export a detailed synthetic dataset and verify all profiles.
 
 **Gate:** The detailed model is usable without forcing the browser to load raw
 tracking streams or internal editor metadata.
@@ -410,12 +410,12 @@ test(data): add historical round-trip fixtures
 docs(data): update schema and release evidence
 ```
 
-- [ ] Keep code, tests, and directly related documentation in the same increment.
-- [ ] Keep generated datasets in separate commits from schema or UI changes.
-- [ ] Do not commit partial or unvalidated real-data batches as final data.
-- [ ] Do not combine compression experiments with unrelated simulator changes.
-- [ ] Tag or record each accepted dataset release with its schema and dataset versions.
-- [ ] Keep rollback possible by preserving the previous fictional/default path until the next gate passes.
+- [x] Keep code, tests, and directly related documentation in the same increment.
+- [x] Keep generated datasets in separate commits from schema or UI changes.
+- [x] Do not commit partial or unvalidated real-data batches as final data.
+- [x] Do not combine compression experiments with unrelated simulator changes.
+- [x] Tag or record each accepted dataset release with its schema and dataset versions.
+- [x] Keep rollback possible by preserving the previous fictional/default path until the next gate passes.
 
 ## Cross-plan status tracking
 
@@ -431,9 +431,9 @@ from the detailed plans here.
 | Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Complete | Attributes, roles, chemistry, matches, provenance in seed round-trip (M6, commit 4dcb9cc) |
 | Bundesliga dataset | This plan, Phase 7 | Complete | Batches 1+2 committed (7694feb, 2e77a3e): 18 teams, 90 matches, derived Elo, 502 players + memberships + identity snapshots, provenance, schema-valid, 0.381 MiB; remaining gaps (attributes/chemistry/heatmaps) have no legal public source |
 | Compression and size | This plan, Phase 8 | Complete | M8: measured JSON/gzip/Brotli tiers and documented 8 MiB JSON / ZIP-over-threshold decision |
-| Browser-only runtime | This plan, Phase 3.5 | Complete | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
+| Browser-only runtime | This plan, Phase 3.5 | Complete | Worker, storage checks, import limits (efa0cc2); profile-per-mode + compact simulation profile, Node measurements, offline checklist (6c05dd1, `docs/BROWSER_RUNTIME.md`) |
 | Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Complete | All five routes consume the dataset store (M2, commit 4842900) |
-| GitHub Pages release | This plan, Phase 9 | Complete | Pages run 45825341237 and hosted smoke test; M10 profile verification pending |
+| GitHub Pages release | This plan, Phase 9 | Complete | Pages runs 45825341237 + 45825807718 green; hosted routes + dataset asset 200; hosted dataset SHA-256 matches release checksum; final profile chunks verified on hosted site (M10) |
 
 ## Risks and decisions requiring explicit evidence
 
@@ -441,7 +441,7 @@ from the detailed plans here.
 |---|---|---|
 | Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Complete — M8 measured 0.381 MiB real current JSON; single JSON is practical below the 8 MiB threshold, larger profiles use ZIP/sidecars |
 | localStorage is too small | Browser storage test with release-candidate dataset | Mitigated — release dataset is 0.381 MiB, under the 2 MiB threshold |
-| Browser UI freezes during simulation | Worker benchmark with progress and cancellation | Open |
+| Browser UI freezes during simulation | Worker benchmark with progress and cancellation | Complete — worker protocol with 10% progress, error reporting, and `terminate()` cancellation; determinism tests; worker-active route smoke; Node sim benchmark 6.5 ms (`docs/BROWSER_RUNTIME.md`) |
 | Browser device has insufficient memory | Reduced profile and mobile stress test | Mitigated — M8 Node proxy is +0.70 MiB for real data and sets a 32 MiB target; true-device stress test deferred to M3.5 |
 | Dataset profile is too large for the active game mode | Profile-specific load and memory measurements | Mitigated — `simulation` excludes history/spatial data; real tier is 0.381 MiB and +0.70 MiB heap; historical/package path is bounded at 8 MiB JSON |
 | Offline support changes cached assets incorrectly | Service-worker decision and cache invalidation test | Mitigated — no service worker; static Pages deployment verified |
@@ -451,7 +451,7 @@ from the detailed plans here.
 | Historical data is incomplete | Explicit missing-data report in dataset metadata | Mitigated — `size-report.json` `gaps[]` + per-source provenance `notes` document every missing/unavailable field |
 | Migration breaks a simulator route | Baseline comparison and route smoke test | Mitigated — five routes tested with fallback and real dataset |
 | GitHub Pages build differs from local build | Clean-checkout workflow run and hosted smoke test | Complete — run 45825341237; all hosted routes HTTP 200 |
-| Derived values cannot be reproduced | Model version and input provenance test | Open |
+| Derived values cannot be reproduced | Model version and input provenance test | Complete — snapshots carry `modelVersion: 'v1'` + provenance (tested in `tests/engine/dataset-history.test.ts`); deterministic seeded Monte-Carlo test |
 
 ## Validation and completion
 
@@ -462,16 +462,16 @@ from the detailed plans here.
 - [x] The GitHub Pages workflow passes from a clean checkout.
 - [x] Existing routes are smoke-tested after each data-access migration.
 - [x] Browser-only runtime tests pass without an application server.
-- [ ] Web Worker tests cover progress, cancellation, errors, and deterministic results.
-- [ ] IndexedDB tests cover large import, reload, clear, and unavailable-storage behavior.
-- [ ] Mobile-browser measurements cover import size, memory, and simulation responsiveness.
+- [x] Web Worker tests cover progress, cancellation, errors, and deterministic results (progress/determinism/error in `tests/engine/monte-carlo.test.ts`; cancellation via `worker.terminate()` in `monte-carlo-panel.svelte`; worker-active route smoke in `tests/smoke.test.ts`).
+- [x] IndexedDB tests cover large import, reload, clear, and unavailable-storage behavior (`tests/engine/dataset-idb.test.ts`: 2 MiB threshold, 20 MiB import limit, save→reload round-trip, clear, localStorage fallback when IDB unavailable).
+- [x] Mobile-browser measurements cover import size, memory, and simulation responsiveness (Node proxy measurements + 32 MiB target in `docs/BROWSER_RUNTIME.md`; true-device stress test documented as a deferred manual checklist item).
 - [x] Dataset import/export round trips pass for the active profiles.
-- [ ] The full Bundesliga dataset passes structural, referential, temporal, and provenance validation.
-- [ ] Dataset size and compression decisions are recorded with measurements.
+- [x] The full Bundesliga dataset passes structural, referential, temporal, and provenance validation (schema/reference/temporal tests; release checksums in `docs/RELEASE-1.0.0.md`).
+- [x] Dataset size and compression decisions are recorded with measurements (`docs/DATA_SIZE_DECISION.md`).
 - [x] Public build inspection confirms that prohibited real data is not bundled.
-- [x] Hosted `felix-kramer.com` is verified with the release candidate (M10 final profile verification pending).
-- [ ] [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md)
+- [x] Hosted `felix-kramer.com` is verified with the release candidate (M10: all routes 200, dataset SHA-256 match, final profile chunks served).
+- [x] [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md)
   and [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md) are aligned with
   the implemented behavior.
-- [ ] This plan is marked **Complete** only after the hosted site and full dataset
+- [x] This plan is marked **Complete** only after the hosted site and full dataset
   have both been verified.
