@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-11-26T12:10:01.697Z",
+  "script": "build-bundesliga-real.mjs",
+  "batch": "1 (teams + real results + derived team strength)",
+  "sources": {
+    "csv": "/tmp/d1.csv",
+    "openfootball": "/tmp/openfootball-de1.json",
+    "retrievedAt": "2026-11-26"
+  },
+  "generationMs": 41,
+  "records": {
+    "competitions": 1,
+    "seasons": 1,
+    "teams": 18,
+    "teamParticipations": 18,
+    "players": 0,
+    "memberships": 0,
+    "teamSnapshots": 18,
+    "playerSnapshots": 0,
+    "tacticalProfiles": 0,
+    "matches": 90,
+    "matchAppearances": 0,
+    "events": 180,
+    "heatmaps": 0,
+    "tracking": 0,
+    "chemistry": 0,
+    "provenance": 3
+  },
+  "sizes": {
+    "compactJson": "0.086 MiB",
+    "prettyJson": "0.117 MiB",
+    "gzip": "0.007 MiB",
+    "brotli": "0.006 MiB"
+  },
+  "smokeTest": {
+    "engineTeamCount": 18,
+    "competitionTeamCount": 18
+  },
+  "gaps": [
+    "No player identities, memberships, or player attributes yet (batch 2).",
+    "No heatmaps, tracking, chemistry, or tactical profiles yet.",
+    "midfield rating omitted (no midfield-specific metric in source)."
+  ]
+}
