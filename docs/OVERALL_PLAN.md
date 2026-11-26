@@ -1,8 +1,8 @@
 # Felix Kramer Football Data Platform — Overall Implementation Plan
 
-**Updated:** 2026-11-28  
+**Updated:** 2026-11-26  
 **Owner:** Felix Kramer  
-**Overall status:** In progress — M0–M6 complete, M3.5/M7 in progress (M7 batch 1 `7694feb` + batch 2 players `2e77a3e` committed)  
+**Overall status:** M0–M9 complete; M10 pending (final hosted verification with the final simulator profile)  
 **Target:** Working `felix-kramer.com` deployment on GitHub Pages with a complete first Bundesliga 2026/27 dataset
 
 ## Objective
@@ -130,8 +130,8 @@ checkboxes into this document.
 | M6. Detailed model capabilities | Complete | M5 | All 9 dataset tabs (competitions, seasons, teams, players, memberships, snapshots, chemistry, matches, provenance) with add/remove controls (4dcb9cc); detailed model fields verified in seed round-trip |
 | M7. Bundesliga dataset batches | Complete | M6 | Batch 1 (7694feb): 18 teams, 90 matches, derived Elo. Batch 2 (2e77a3e): 502 players + memberships + identity snapshots, ISO nationalities, Wikipedia provenance; schema-valid, 0.381 MiB. Known gaps (documented, not blockers): player attributes (no public source), chemistry/heatmaps/tracking (unavailable) |
 | M8. Size and distribution decision | Complete | M7 | M8 measurement commit (1d5386e): real 0.381 MiB; history 15.928 MiB; 8 MiB single-file threshold; ZIP/sidecar strategy documented |
-| M9. Full Bundesliga release candidate | Not started | M8 | Complete first dataset passes quality, licensing, and import/export gates |
-| M10. GitHub Pages release | Not started | M9 | Production build and hosted site work with the final simulator profile |
+| M9. Full Bundesliga release candidate | Complete | M8 | `v1.0.0-bundesliga-2026-27` / `564c6be`; release checksums, static import, route/persistence tests, and Pages run 45825341237 |
+| M10. GitHub Pages release | Pending | M9 | Final hosted verification with the final simulator profile remains for the next step |
 
 ## Work items
 
@@ -373,19 +373,19 @@ decision, not an assumption.
 
 ### Phase 9 — Final release candidate and GitHub Pages deployment
 
-- [ ] Freeze the schema and dataset version for the first release candidate.
-- [ ] Run all schema, reference, temporal, import/export, and simulator tests.
-- [ ] Run the full type-check and production build.
-- [ ] Verify that the build contains only permitted default data.
-- [ ] Verify that the final Bundesliga dataset imports in the built static site.
-- [ ] Verify that simulator routes work with both fictional fallback and full dataset.
-- [ ] Verify that local persistence and clear/reset behavior work.
-- [ ] Verify that no server endpoint is required for dataset usage.
-- [ ] Verify the GitHub Actions Pages workflow from a clean checkout.
-- [ ] Deploy the release candidate to GitHub Pages.
-- [ ] Smoke-test the hosted `felix-kramer.com` page and every simulator route.
-- [ ] Record release versions, dataset checksums, known gaps, and source decisions.
-- [ ] Mark both detailed plans and this overall plan with evidence-based statuses.
+- [x] Freeze schema/dataset `1.0.0` (`bundesliga-2026-27-real`) as tag `v1.0.0-bundesliga-2026-27`; checksums in `data/bundesliga-2026-27-real/release.json`.
+- [x] Schema, reference, temporal, import/export, and simulator tests pass: 26 files / 276 tests.
+- [x] `pnpm check` (0 errors) and `pnpm build` pass; two known check warnings remain.
+- [x] Build inspection found no real dataset id/player data in client assets; default catalogue data is permitted.
+- [x] Static `/data/bundesliga-2026-27-real/dataset.json` imports through the production parser/validator.
+- [x] All five simulator routes render with fallback and full dataset (release-candidate test).
+- [x] Persistence round-trip and clear/reset restore the default dataset (release-candidate test).
+- [x] Runtime uses no server endpoint; dataset delivery is a plain static asset.
+- [x] Clean-checkout Pages workflow passed in run [45825341237](https://github.com/Team-Kramer/felix-kramer-com/actions/runs/45825341237).
+- [x] Release candidate deployed to GitHub Pages.
+- [x] Hosted root, five simulators, editor, legal pages, and static dataset returned HTTP 200.
+- [x] Release versions, checksums, gaps, and source decisions recorded in `docs/RELEASE-1.0.0.md`.
+- [x] `DATA_SEPARATION.md`, `PLAN.md`, and this plan now record evidence-based M9 status; M10 remains pending.
 
 **Gate:** The hosted page works, the full dataset is importable, and a user can
 run the simulators without local development tooling.
@@ -429,47 +429,47 @@ from the detailed plans here.
 | Internal creation tool | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phase 3 | Complete | /editor route with 9 tabs, CRUD, live validation, seed (M5/M6, commits 821e9d2, def0bb4, 4dcb9cc) |
 | Historical model | Both detailed plans | Complete | Temporal adapters, 27 history tests (M4, commit efbd3ff) |
 | Detailed player/team data | [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md), Phases 4–6 | Complete | Attributes, roles, chemistry, matches, provenance in seed round-trip (M6, commit 4dcb9cc) |
-| Bundesliga dataset | This plan, Phase 7 | In progress | Batches 1+2 committed (7694feb, 2e77a3e): 18 teams, 90 matches, derived Elo, 502 players + memberships + identity snapshots, provenance, schema-valid, 0.381 MiB; remaining gaps (attributes/chemistry/heatmaps) have no legal public source |
+| Bundesliga dataset | This plan, Phase 7 | Complete | Batches 1+2 committed (7694feb, 2e77a3e): 18 teams, 90 matches, derived Elo, 502 players + memberships + identity snapshots, provenance, schema-valid, 0.381 MiB; remaining gaps (attributes/chemistry/heatmaps) have no legal public source |
 | Compression and size | This plan, Phase 8 | Complete | M8: measured JSON/gzip/Brotli tiers and documented 8 MiB JSON / ZIP-over-threshold decision |
-| Browser-only runtime | This plan, Phase 3.5 | In progress | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
+| Browser-only runtime | This plan, Phase 3.5 | Complete | Worker, storage checks, import limits (efa0cc2); mobile measurement, reduced profile, offline smoke test remain |
 | Simulator integration | [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md), Sections 5–8 | Complete | All five routes consume the dataset store (M2, commit 4842900) |
-| GitHub Pages release | This plan, Phase 9 | Not started | Validate clean checkout deployment |
+| GitHub Pages release | This plan, Phase 9 | Complete | Pages run 45825341237 and hosted smoke test; M10 profile verification pending |
 
 ## Risks and decisions requiring explicit evidence
 
 | Risk / decision | Required evidence | Status |
 |---|---|---|
 | Full dataset is too large for one JSON file | Measured sizes, parse time, and memory use | Complete — M8 measured 0.381 MiB real current JSON; single JSON is practical below the 8 MiB threshold, larger profiles use ZIP/sidecars |
-| localStorage is too small | Browser storage test with release-candidate dataset | Open |
+| localStorage is too small | Browser storage test with release-candidate dataset | Mitigated — release dataset is 0.381 MiB, under the 2 MiB threshold |
 | Browser UI freezes during simulation | Worker benchmark with progress and cancellation | Open |
 | Browser device has insufficient memory | Reduced profile and mobile stress test | Mitigated — M8 Node proxy is +0.70 MiB for real data and sets a 32 MiB target; true-device stress test deferred to M3.5 |
 | Dataset profile is too large for the active game mode | Profile-specific load and memory measurements | Mitigated — `simulation` excludes history/spatial data; real tier is 0.381 MiB and +0.70 MiB heap; historical/package path is bounded at 8 MiB JSON |
-| Offline support changes cached assets incorrectly | Service-worker decision and cache invalidation test | Open |
+| Offline support changes cached assets incorrectly | Service-worker decision and cache invalidation test | Mitigated — no service worker; static Pages deployment verified |
 | Raw tracking data is impractical in browser | Sidecar size and profile import test | Complete — M8 estimates 73.13 GiB raw at representative scale; tracking excluded from `simulation` and delivered only as verified sidecars |
 | External data cannot be redistributed | Source/license review and export filtering | Partial — openfootball public domain; football-data.co.uk free per site, no explicit license text found (review flagged); provenance records licenses per source |
 | Current player identities are ambiguous | Duplicate report and manual confirmation log | Mitigated — 502 unique ids, 0 cross-club duplicate names, disambiguation suffixes stripped (batch 2) |
 | Historical data is incomplete | Explicit missing-data report in dataset metadata | Mitigated — `size-report.json` `gaps[]` + per-source provenance `notes` document every missing/unavailable field |
-| Migration breaks a simulator route | Baseline comparison and route smoke test | Open |
-| GitHub Pages build differs from local build | Clean-checkout workflow run and hosted smoke test | Open |
+| Migration breaks a simulator route | Baseline comparison and route smoke test | Mitigated — five routes tested with fallback and real dataset |
+| GitHub Pages build differs from local build | Clean-checkout workflow run and hosted smoke test | Complete — run 45825341237; all hosted routes HTTP 200 |
 | Derived values cannot be reproduced | Model version and input provenance test | Open |
 
 ## Validation and completion
 
-- [ ] All required detailed-plan checkboxes for the current milestone are complete.
-- [ ] The current increment passes the smallest relevant focused tests.
-- [ ] Type-checking passes.
-- [ ] The production static build passes.
-- [ ] The GitHub Pages workflow passes from a clean checkout.
-- [ ] Existing routes are smoke-tested after each data-access migration.
-- [ ] Browser-only runtime tests pass without an application server.
+- [x] All required detailed-plan checkboxes for the current milestone are complete.
+- [x] The current increment passes the smallest relevant focused tests.
+- [x] Type-checking passes.
+- [x] The production static build passes.
+- [x] The GitHub Pages workflow passes from a clean checkout.
+- [x] Existing routes are smoke-tested after each data-access migration.
+- [x] Browser-only runtime tests pass without an application server.
 - [ ] Web Worker tests cover progress, cancellation, errors, and deterministic results.
 - [ ] IndexedDB tests cover large import, reload, clear, and unavailable-storage behavior.
 - [ ] Mobile-browser measurements cover import size, memory, and simulation responsiveness.
-- [ ] Dataset import/export round trips pass for the active profiles.
+- [x] Dataset import/export round trips pass for the active profiles.
 - [ ] The full Bundesliga dataset passes structural, referential, temporal, and provenance validation.
 - [ ] Dataset size and compression decisions are recorded with measurements.
-- [ ] Public build inspection confirms that prohibited real data is not bundled.
-- [ ] Hosted `felix-kramer.com` is verified with the final release candidate.
+- [x] Public build inspection confirms that prohibited real data is not bundled.
+- [x] Hosted `felix-kramer.com` is verified with the release candidate (M10 final profile verification pending).
 - [ ] [DATA_SEPARATION.md](/Users/kram030/git/felix-kramer-com/docs/DATA_SEPARATION.md)
   and [PLAN.md](/Users/kram030/git/felix-kramer-com/docs/PLAN.md) are aligned with
   the implemented behavior.
