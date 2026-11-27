@@ -146,9 +146,16 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-12">
-	<SectionTitle emoji="⚽" title={i18n.t('match.title')} />
+	<SectionTitle level="h1" emoji="⚽" title={i18n.t('match.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('match.subtitle')}</p>
-	<DatasetManager />
+	<details class="mt-5 rounded-xl border border-line bg-surface">
+		<summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-ink">
+			{i18n.t('match.dataAndModel')}
+		</summary>
+		<div class="px-4 pb-4">
+			<DatasetManager />
+		</div>
+	</details>
 
 	<!-- Team pickers -->
 	<div class="mt-8 grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
@@ -183,6 +190,7 @@
 			<MatchCard home={home} away={away} probabilities={probs} />
 			<div class="rounded-lg border border-line bg-surface p-4">
 				<ChaosSlider bind:value={chaos} label={i18n.t('common.chaos')} />
+				<p class="mt-2 text-caption text-ink-tertiary">{i18n.t('match.chaosHint')}</p>
 			</div>
 		</div>
 
@@ -191,6 +199,7 @@
 				<h2 class="text-caption font-semibold uppercase tracking-wide text-ink-tertiary">
 					{i18n.t('match.probabilities')}
 				</h2>
+				<p class="mt-1 text-sm text-ink-secondary">{i18n.t('match.forecastHint')}</p>
 				<div class="mt-4 flex flex-col gap-3">
 					<ProbabilityBar label={home.name} value={probs.home} color="accent" />
 					<ProbabilityBar label={i18n.t('common.draw')} value={probs.draw} color="sky" />
@@ -200,7 +209,9 @@
 					{i18n.t('match.expectedGoals')}: {xg.home.toFixed(2)} – {xg.away.toFixed(2)}
 				</p>
 			</div>
-			<Button variant="secondary" onclick={runInstant}>{i18n.t('match.startSim')}</Button>
+			<div class="sticky bottom-4 z-10 rounded-xl bg-stage/90 p-1 backdrop-blur-md md:static md:bg-transparent md:p-0 md:backdrop-blur-none">
+				<Button class="w-full" variant="secondary" onclick={runInstant}>{i18n.t('match.runOnce')}</Button>
+			</div>
 		</div>
 	</div>
 

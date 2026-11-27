@@ -111,6 +111,10 @@ export const en: Catalog = {
 		probabilities: 'Probabilities',
 		expectedGoals: 'Expected goals (xG)',
 		startSim: 'Simulate match',
+		runOnce: 'Run one match',
+		dataAndModel: 'Data & model',
+		forecastHint: 'Forecast from team strength and selected chaos. No single match has run yet.',
+		chaosHint: 'How much unpredictability should the simulation allow?',
 		replay: 'Replay'
 	},
 	tournament: {

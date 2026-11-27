@@ -155,7 +155,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12">
-	<SectionTitle emoji="⚽" title={i18n.t('league.title')} />
+	<SectionTitle level="h1" emoji="⚽" title={i18n.t('league.title')} />
 	<p class="mt-2 max-w-2xl text-ink-secondary">{i18n.t('league.subtitle')}</p>
 	<DatasetManager />
 

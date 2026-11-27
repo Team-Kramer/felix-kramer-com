@@ -112,6 +112,10 @@ export const de = {
 		probabilities: 'Wahrscheinlichkeiten',
 		expectedGoals: 'Erwartete Tore (xG)',
 		startSim: 'Match simulieren',
+		runOnce: 'Ein Match ausführen',
+		dataAndModel: 'Daten & Modell',
+		forecastHint: 'Prognose aus Teamstärke und gewähltem Chaos. Noch kein einzelnes Match.',
+		chaosHint: 'Wie viel Unvorhersehbarkeit soll die Simulation zulassen?',
 		replay: 'Nochmal'
 	},
 	tournament: {
