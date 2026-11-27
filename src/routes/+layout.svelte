@@ -56,6 +56,7 @@
 		{ href: '/league', key: 'nav.league' },
 		{ href: '/bracket', key: 'nav.bracket' },
 		{ href: '/draft', key: 'nav.draft' },
+		{ href: '/players', key: 'nav.players' },
 		{ href: '/editor', key: 'nav.editor' },
 		{ href: '/blog', key: 'nav.blog' },
 		{ href: '/about', key: 'nav.about' }

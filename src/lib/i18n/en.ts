@@ -8,6 +8,7 @@ export const en: Catalog = {
 		league: 'League',
 		bracket: 'Knockout',
 		draft: 'Draft',
+		players: 'Players',
 		editor: 'Dataset editor',
 		blog: 'Blog',
 		about: 'About',
@@ -170,6 +171,19 @@ export const en: Catalog = {
 		passAndPlay: 'Pass and play',
 		redrawHint: 'Draw a new card (costs one redraw).',
 		completeHint: 'Fill all 11 positions to start the campaign.'
+	},
+	players: {
+		title: 'Player database',
+		subtitle: 'Search your imported dataset for players, positions, teams and ratings.',
+		searchPlaceholder: 'Search players…',
+		allPositions: 'All positions',
+		team: 'Team',
+		rating: 'Rating',
+		potential: 'Potential',
+		noPlayers: 'This dataset does not contain player data yet.',
+		importHint: 'Import a dataset with players to use the database.',
+		showing: 'players shown',
+		clearSearch: 'Clear search'
 	},
 	about: {
 		title: 'About me',

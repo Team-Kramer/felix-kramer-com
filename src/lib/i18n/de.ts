@@ -9,6 +9,7 @@ export const de = {
 		league: 'Liga',
 		bracket: 'K.-o.',
 		draft: 'Draft',
+		players: 'Spieler',
 		editor: 'Dateneditor',
 		blog: 'Blog',
 		about: 'Über mich',
@@ -171,6 +172,19 @@ export const de = {
 		passAndPlay: 'Reihum spielen',
 		redrawHint: 'Ziehe eine neue Karte (kostet eine Neuziehung).',
 		completeHint: 'Alle 11 Positionen besetzen, um die Kampagne zu starten.'
+	},
+	players: {
+		title: 'Spieler-Datenbank',
+		subtitle: 'Durchsuche dein importiertes Dataset und finde Spieler, Positionen und Bewertungen.',
+		searchPlaceholder: 'Spieler suchen…',
+		allPositions: 'Alle Positionen',
+		team: 'Verein',
+		rating: 'Bewertung',
+		potential: 'Potenzial',
+		noPlayers: 'Dieses Dataset enthält noch keine Spielerdaten.',
+		importHint: 'Importiere ein Dataset mit Spielern, um die Datenbank zu nutzen.',
+		showing: 'Spieler angezeigt',
+		clearSearch: 'Suche leeren'
 	},
 	about: {
 		title: 'Über mich',

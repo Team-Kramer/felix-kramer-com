@@ -50,6 +50,12 @@
 			icon: 'how_to_reg',
 			title: 'Draft',
 			text: 'Baue dein Team im Draft — mit fairem Pick-Order und Team-Chemie.'
+		},
+		{
+			href: '/players',
+			icon: 'person_search',
+			title: 'Spieler-Datenbank',
+			text: 'Durchsuche dein importiertes Dataset nach Spielern, Positionen und Bewertungen.'
 		}
 	];
 
@@ -181,7 +187,7 @@
 <!-- 4 · Simulator showcase -->
 <section class="reveal border-y border-line bg-surface">
 	<div class="mx-auto max-w-6xl px-4 py-16">
-		<h2 class="text-headline-lg">Fünf Simulatoren. Ein Ziel: Klarheit.</h2>
+		<h2 class="text-headline-lg">Werkzeuge für Fußball. Ein Ziel: Klarheit.</h2>
 		<p class="mt-3 max-w-xl text-ink-secondary">
 			Jeder Simulator beantwortet eine andere Frage — vom einzelnen Match bis zur
 			ganzen Saison.
