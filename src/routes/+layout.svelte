@@ -188,16 +188,17 @@
 	</main>
 
 	<!-- Honeypot strip: consistent SaaS CTA on every page -->
-	<section aria-label="Felix SaaS" class="mx-auto max-w-6xl px-4 pb-16">
-		<div class="glow-border rounded-2xl bg-surface p-8 text-center md:p-10">
-			<h2 class="text-headline-lg">Du willst mehr als simulieren?</h2>
-			<p class="mx-auto mt-3 max-w-xl text-ink-secondary">
+	<section aria-label="Felix SaaS" class="mx-auto max-w-6xl px-4 pb-24 pt-16 md:pb-32 md:pt-24">
+		<div class="rounded-2xl border border-line-strong bg-surface-elevated p-8 text-center md:p-12">
+			<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent">Nächster Schritt</p>
+			<h2 class="mt-3 text-headline-lg text-ink">Du willst mehr als simulieren?</h2>
+			<p class="mx-auto mt-4 max-w-xl text-ink-secondary">
 				Felix ist auch eine Fußball-Intelligenz-Plattform im Aufbau: eigene Teams,
 				Szenarien und Analysen. Melde dich, wenn du früh dabei sein willst.
 			</p>
 			<a
 				href="mailto:hello@felix-kramer.com"
-				class="pulse-cta mt-6 inline-block rounded-full bg-accent px-8 py-3 font-bold text-on-green transition-colors duration-150 hover:bg-accent-hover"
+				class="mt-8 inline-block rounded-full bg-accent px-8 py-3 font-bold text-on-green transition-colors duration-150 hover:bg-accent-hover"
 			>
 				Kontakt aufnehmen
 			</a>
